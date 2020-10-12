@@ -1,7 +1,7 @@
 #Eclipse Specific
 .classpath
 .project
-
+.zip	
 
 # Compiled class file
 *.class
