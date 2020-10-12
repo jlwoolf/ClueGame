@@ -1,4 +1,4 @@
-// Rooms and room cards
+// rooms and room cards
 Room, Brown Hall, BB
 Room, Rec Center, RC
 Room, Student Center, SC
@@ -8,3 +8,8 @@ Room, Student Hall's, SH
 Room, Chauvenet Hall, CH
 Room, Kafadar Commons, KC
 Room, CoorsTek, CT
+Room, Alderson Hall, AH
+Room, Parking Garage, PG
+// other spaces on board
+Space, Unused, X
+Space, Walkway, W
