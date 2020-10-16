@@ -1,3 +1,32 @@
+commit b38adafc794ac83eaa084b281c619b224e8efc6a
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Thu Oct 15 20:04:02 2020 -0600
+
+    Changes to be committed:
+    Corrected assertations in tests java to fix thrown warnings
+            modified:   src/experiment/TestBoard.java
+            modified:   src/tests/BoardTestsExp.java
+
+commit b69aa3595eb2ab0e9047c47b597a4521971410dd
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Thu Oct 15 19:58:09 2020 -0600
+
+    Changes to be committed:
+            new file:   gitlog.txt
+    
+    Modified the test files to satisfy the adjacency and target system for
+    the board.
+            modified:   src/experiment/TestBoard.java
+            modified:   src/experiment/TestBoardCell.java
+            modified:   src/tests/BoardTestsExp.java
+
+commit 91e4774cc49df366d034e85ed93e6ae7c8ca413f
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 14:50:17 2020 -0600
+
+    Changes to be committed:
+            modified:   README.md
+
 commit f4ca4c28e2aeb0860acc3aafeac540453df34615
 Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
 Date:   Mon Oct 12 14:34:18 2020 -0600
