@@ -1,0 +1,68 @@
+commit f4ca4c28e2aeb0860acc3aafeac540453df34615
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 14:34:18 2020 -0600
+
+    Changes to be committed:
+            modified:   ClueSetup.txt - Added 2 more rooms
+            modified:   README.md - Corrected notation error
+            new file:   src/experiment/TestBoard.java
+            new file:   src/experiment/TestBoardCell.java
+            new file:   src/tests/BoardTestsExp.java
+
+commit 32efee3cc60134dad1c2e10f4646da1dc4586b00
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 11:17:43 2020 -0600
+
+    Changes to be committed:
+            modified:   .gitignore
+            modified:   README.md
+
+commit 08a13ac8efa814129c0da43e322594374a772c7c
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 11:15:02 2020 -0600
+
+    Changes to be committed:
+            new file:   ClueLayout.csv
+
+commit 0c5ce1224a672e9e9f36533141888e1ab1b86a7a
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 11:13:48 2020 -0600
+
+    Changes to be committed:
+            modified:   ClueLayout.xlsx
+
+commit 919e4c458e15d715c32f8b66b94efec8689d42ab
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 11:12:37 2020 -0600
+
+    Changes to be committed:
+            modified:   .gitignore
+
+commit dadbe1e7ace1cb4f04bb6f489d35e542008f066c
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 10:13:29 2020 -0600
+
+    Changes to be committed:
+            modified:   .gitignore
+            new file:   ClueLayout.xlsx
+            new file:   ClueSetup.txt
+
+commit 8ffaf1f0a42450378840bca9c5ffb8866a0b694c
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 09:44:34 2020 -0600
+
+    Changes to be committed:
+            modified:   .gitignore
+
+commit 55180b69900f49af445e9100666b3c47fce3ff44
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 12 09:43:18 2020 -0600
+
+    Changes to be committed:
+            new file:   Clue Rules V25.docx - Added rule file to repository
+
+commit 1de27dcb76bf065f6001576bc2d2ede687489744
+Author: jlwoolf <60640764+jlwoolf@users.noreply.github.com>
+Date:   Mon Oct 12 09:41:03 2020 -0600
+
+    Initial commit

@@ -1,9 +1,12 @@
 package tests;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.util.Set;
 
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import experiment.TestBoard;
 import experiment.TestBoardCell;
@@ -11,7 +14,8 @@ import junit.framework.Assert;
 
 public class BoardTestsExp {
 	TestBoard testBoard;
-	@BeforeEach 
+	
+	@BeforeEach
 	public void setup() {
 		testBoard = new TestBoard();
 	}
@@ -22,8 +26,8 @@ public class BoardTestsExp {
 	public void testAdjacency0() {
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		Set<TestBoardCell> testAdjList = cell.getAdjList();
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(1, 0)));
 		Assert.assertTrue(testAdjList.contains(testBoard.getCell(0, 1)));
+		Assert.assertTrue(testAdjList.contains(testBoard.getCell(1, 0)));
 		Assert.assertEquals(2, testAdjList.size());
 	}
 	
@@ -82,40 +86,43 @@ public class BoardTestsExp {
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		testBoard.calcTargets(cell, 3);
 		Set<TestBoardCell> targets = testBoard.getTargets();
-		Assert.assertEquals(4, targets.size());
+		Assert.assertEquals(6, targets.size());
 		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
 		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
 		Assert.assertTrue(targets.contains(testBoard.getCell(1, 2)));
 		Assert.assertTrue(targets.contains(testBoard.getCell(0, 3)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(1, 0)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(0, 1)));
 	}
 	
 	//checks that target cells are correct for a given dice roll of 3
 	//board has an occupied cell
 	@Test
 	public void testTargetOccupied() {
-		testBoard.getCell(1, 2).setOccupied(true);
+		testBoard.getCell(0, 2).setOccupied(true);
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		testBoard.calcTargets(cell, 3);
 		Set<TestBoardCell> targets = testBoard.getTargets();
-		Assert.assertEquals(3, targets.size());
+		Assert.assertEquals(5, targets.size());
 		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
 		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 3)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(1, 2)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(1, 0)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(0, 1)));
 	}
 	
 	//checks that target cells are correct for a given dice roll of 3
 	//board has a room cell
 	@Test
 	public void testTargetRoom() {
-		testBoard.getCell(0, 2).setRoom(true);
+		testBoard.getCell(0, 1).setRoom(true);
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		testBoard.calcTargets(cell, 3);
 		Set<TestBoardCell> targets = testBoard.getTargets();
-		Assert.assertEquals(5, targets.size());
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 2)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
+		Assert.assertEquals(4, targets.size());
+		Assert.assertTrue(targets.contains(testBoard.getCell(0, 1)));
 		Assert.assertTrue(targets.contains(testBoard.getCell(1, 2)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 3)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
+		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
 	}
 }
