@@ -3,10 +3,6 @@ package experiment;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Test;
-
-import junit.framework.Assert;
-
 public class TestBoard {
 	private TestBoardCell[][] grid;
 	private Set<TestBoardCell> targets;

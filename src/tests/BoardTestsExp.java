@@ -1,9 +1,10 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
@@ -21,14 +22,15 @@ public class BoardTestsExp {
 	}
 	
 	//checks that adjacent cell list is correct for location (0,0) on a 4x4 grid
+	
 	//this cell is in the top left of the board
 	@Test
 	public void testAdjacency0() {
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		Set<TestBoardCell> testAdjList = cell.getAdjList();
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(0, 1)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(1, 0)));
-		Assert.assertEquals(2, testAdjList.size());
+		assertTrue(testAdjList.contains(testBoard.getCell(0, 1)));
+		assertTrue(testAdjList.contains(testBoard.getCell(1, 0)));
+		assertEquals(2, testAdjList.size());
 	}
 	
 	//checks that adjacent cell list is correct for location (3,3) on a 4x4 grid
@@ -37,9 +39,9 @@ public class BoardTestsExp {
 	public void testAdjacency1() {
 		TestBoardCell cell = testBoard.getCell(3, 3);
 		Set<TestBoardCell> testAdjList = cell.getAdjList();
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(2, 3)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(3, 2)));
-		Assert.assertEquals(2, testAdjList.size());
+		assertTrue(testAdjList.contains(testBoard.getCell(2, 3)));
+		assertTrue(testAdjList.contains(testBoard.getCell(3, 2)));
+		assertEquals(2, testAdjList.size());
 	}
 	
 	//checks that adjacent cell list is correct for location (1,3) on a 4x4 grid
@@ -48,10 +50,10 @@ public class BoardTestsExp {
 	public void testAdjacency2() {
 		TestBoardCell cell = testBoard.getCell(1, 3);
 		Set<TestBoardCell> testAdjList = cell.getAdjList();
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(0, 3)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(2, 3)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(1, 2)));
-		Assert.assertEquals(3, testAdjList.size());
+		assertTrue(testAdjList.contains(testBoard.getCell(0, 3)));
+		assertTrue(testAdjList.contains(testBoard.getCell(2, 3)));
+		assertTrue(testAdjList.contains(testBoard.getCell(1, 2)));
+		assertEquals(3, testAdjList.size());
 	}
 	
 	//checks that adjacent cell list is correct for location (3,1) on a 4x4 grid
@@ -60,10 +62,10 @@ public class BoardTestsExp {
 	public void testAdjacency3() {
 		TestBoardCell cell = testBoard.getCell(3, 1);
 		Set<TestBoardCell> testAdjList = cell.getAdjList();
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(3, 0)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(3, 2)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(2, 1)));
-		Assert.assertEquals(3, testAdjList.size());
+		assertTrue(testAdjList.contains(testBoard.getCell(3, 0)));
+		assertTrue(testAdjList.contains(testBoard.getCell(3, 2)));
+		assertTrue(testAdjList.contains(testBoard.getCell(2, 1)));
+		assertEquals(3, testAdjList.size());
 	}
 	
 	//checks that adjacent cell list is correct for location (2,2) on a 4x4 grid
@@ -72,11 +74,11 @@ public class BoardTestsExp {
 	public void testAdjacency4() {
 		TestBoardCell cell = testBoard.getCell(2, 2);
 		Set<TestBoardCell> testAdjList = cell.getAdjList();
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(2, 1)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(2, 3)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(1, 2)));
-		Assert.assertTrue(testAdjList.contains(testBoard.getCell(3, 2)));
-		Assert.assertEquals(4, testAdjList.size());
+		assertTrue(testAdjList.contains(testBoard.getCell(2, 1)));
+		assertTrue(testAdjList.contains(testBoard.getCell(2, 3)));
+		assertTrue(testAdjList.contains(testBoard.getCell(1, 2)));
+		assertTrue(testAdjList.contains(testBoard.getCell(3, 2)));
+		assertEquals(4, testAdjList.size());
 	}
 	
 	//checks that target cells are correct for a given dice roll of 3
@@ -86,13 +88,13 @@ public class BoardTestsExp {
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		testBoard.calcTargets(cell, 3);
 		Set<TestBoardCell> targets = testBoard.getTargets();
-		Assert.assertEquals(6, targets.size());
-		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(1, 2)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 3)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(1, 0)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 1)));
+		assertEquals(6, targets.size());
+		assertTrue(targets.contains(testBoard.getCell(3, 0)));
+		assertTrue(targets.contains(testBoard.getCell(2, 1)));
+		assertTrue(targets.contains(testBoard.getCell(1, 2)));
+		assertTrue(targets.contains(testBoard.getCell(0, 3)));
+		assertTrue(targets.contains(testBoard.getCell(1, 0)));
+		assertTrue(targets.contains(testBoard.getCell(0, 1)));
 	}
 	
 	//checks that target cells are correct for a given dice roll of 3
@@ -103,12 +105,12 @@ public class BoardTestsExp {
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		testBoard.calcTargets(cell, 3);
 		Set<TestBoardCell> targets = testBoard.getTargets();
-		Assert.assertEquals(5, targets.size());
-		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(1, 2)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(1, 0)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 1)));
+		assertEquals(5, targets.size());
+		assertTrue(targets.contains(testBoard.getCell(3, 0)));
+		assertTrue(targets.contains(testBoard.getCell(2, 1)));
+		assertTrue(targets.contains(testBoard.getCell(1, 2)));
+		assertTrue(targets.contains(testBoard.getCell(1, 0)));
+		assertTrue(targets.contains(testBoard.getCell(0, 1)));
 	}
 	
 	//checks that target cells are correct for a given dice roll of 3
@@ -119,10 +121,10 @@ public class BoardTestsExp {
 		TestBoardCell cell = testBoard.getCell(0, 0);
 		testBoard.calcTargets(cell, 3);
 		Set<TestBoardCell> targets = testBoard.getTargets();
-		Assert.assertEquals(4, targets.size());
-		Assert.assertTrue(targets.contains(testBoard.getCell(0, 1)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(1, 2)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(2, 1)));
-		Assert.assertTrue(targets.contains(testBoard.getCell(3, 0)));
+		assertEquals(4, targets.size());
+		assertTrue(targets.contains(testBoard.getCell(0, 1)));
+		assertTrue(targets.contains(testBoard.getCell(1, 2)));
+		assertTrue(targets.contains(testBoard.getCell(2, 1)));
+		assertTrue(targets.contains(testBoard.getCell(3, 0)));
 	}
 }
