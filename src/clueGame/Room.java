@@ -5,10 +5,12 @@ public class Room {
 	private BoardCell centerCell;
 	private BoardCell labelCell;
 	
+	//constructor
 	public Room(String name) {
 		this.name = name;
 	}
 	
+	//name getter and setter
 	public String getName() {
 		return name;
 	}
@@ -16,6 +18,7 @@ public class Room {
 		this.name = name;
 	}
 	
+	//center cell getter and setter
 	public BoardCell getCenterCell() {
 		return centerCell;
 	}
@@ -23,6 +26,7 @@ public class Room {
 		this.centerCell = centerCell;
 	}
 
+	//label cell getter and setter
 	public BoardCell getLabelCell() {
 		return labelCell;
 	}

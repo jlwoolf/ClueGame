@@ -32,14 +32,12 @@ public class Board {
 		try {
 			loadSetupConfig();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		try {
 			loadLayoutConfig();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -52,14 +50,18 @@ public class Board {
 		this.setupConfigFile = "data/" + setupConfigFile;
 	}
 
+	//load setup config and check for errors
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException{
 		Scanner fileReader = new Scanner(new File(setupConfigFile));
 		roomMap = new HashMap<Character, Room>();
+		//parse through file and add each room to roomMap
 		while(fileReader.hasNext()) {
 			String line = fileReader.nextLine();
 			if(line.contains("//"))
 					continue;
 			
+			//make sure only two types of spaces exist, Card and Other
+			//throws error if otherwise
 			String[] lineContents = line.split(", ");
 			if(!lineContents[0].equals("Room") && !lineContents[0].equals("Space"))
 				throw new BadConfigFormatException();
@@ -72,22 +74,29 @@ public class Board {
 		}
 		fileReader.close();
 	}
+	
+	//load layout config and check for errors
 	@SuppressWarnings("resource")
 	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException {
+		//get number of rows and columns to initialze the grid
 		File file = new File(layoutConfigFile);
 		Scanner fileReader = new Scanner(file);
 		setRowsColumns(fileReader);
 		grid = new BoardCell[numRows][numColumns];
 		fileReader.close();
 		
+		//re-run through file line by line
 		fileReader = new Scanner(file);
 		for(int i = 0; i < numRows; i++) {
+			//get line contents and split into each cell
 			String line = fileReader.nextLine();
 			String[] lineContents = line.split(",");
 			for(int j = 0; j < numColumns; j++) {
+				//verify that room is a valid room from setup file
 				if(!roomMap.containsKey(lineContents[j].charAt(0))) {
 					throw new BadConfigFormatException();
 				} else {
+					//update grid cell with proper infromation from file
 					grid[i][j] = new BoardCell(i, j, lineContents[j].charAt(0));
 					if(lineContents[j].contains("*")) {
 						grid[i][j].setRoomCenter(true);
@@ -119,6 +128,7 @@ public class Board {
 		}
 		
 	}
+	//calculate row and column counts
 	private void setRowsColumns(Scanner fileReader) throws BadConfigFormatException {
 		int rows = 0;
 		int cols = 0;
@@ -130,13 +140,13 @@ public class Board {
 			if(numColumns == 0)
 				numColumns = cols;
 			else if(numColumns != cols)
-				throw new BadConfigFormatException();
+				throw new BadConfigFormatException(numColumns, cols);
 			
 			rows++;
 		}
 		numRows = rows;
 	}
-	
+	//getters for rows and columns
 	public int getNumRows() {
 		return numRows;
 	}
@@ -144,6 +154,7 @@ public class Board {
 		return numColumns;
 	}
 	
+	//getters for room of cell or character
 	public Room getRoom(char roomChar) {
 		return roomMap.get(roomChar);
 	}
@@ -194,14 +205,9 @@ public class Board {
 			}
 		}
 	}
+	
+	//getter for cell in grid
 	public BoardCell getCell(int i, int j) {
 		return grid[i][j];
-	}
-	
-	public static void main(String[] args) {
-		Board board = new Board();
-		board.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
-		board.initialize();
-		
 	}
 }
