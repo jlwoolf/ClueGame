@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class BoardCell {
@@ -27,6 +28,7 @@ public class BoardCell {
 		this.occupied = false;
 		this.roomLabel = false;
 		this.roomCenter = false;
+		this.adjList = new HashSet<>();
 		this.doorDirection = DoorDirection.NONE;
 	}
 	public BoardCell(int row, int col, char initial) {
@@ -40,6 +42,7 @@ public class BoardCell {
 		this.roomCenter = false;
 		
 		this.initial = initial;
+		this.adjList = new HashSet<>();
 		this.doorDirection = DoorDirection.NONE;
 	}
 	

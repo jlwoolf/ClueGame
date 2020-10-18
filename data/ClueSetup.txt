@@ -4,7 +4,7 @@ Room, Rec Center, R
 Room, Student Center, S
 Room, Bethoud Hall, b,
 Room, Arthur Lakes Library, L
-Room, Student Hall's, s
+Room, Student Halls, s
 Room, Chauvenet Hall, C
 Room, Kafadar Commons, K
 Room, CoorsTek, c
