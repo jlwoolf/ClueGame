@@ -11,7 +11,6 @@ import java.util.Set;
 
 import experiment.TestBoard;
 import experiment.TestBoardCell;
-import junit.framework.Assert;
 
 public class BoardTestsExp {
 	TestBoard testBoard;

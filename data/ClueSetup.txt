@@ -1,0 +1,15 @@
+// rooms and room cards
+Room, Brown Hall, B
+Room, Rec Center, R
+Room, Student Center, S
+Room, Bethoud Hall, b,
+Room, Arthur Lakes Library, L
+Room, Student Hall's, s
+Room, Chauvenet Hall, C
+Room, Kafadar Commons, K
+Room, CoorsTek, c
+Room, Alderson Hall, A
+Room, Parking Garage, P
+// other spaces on board
+Space, Unused, X
+Space, Walkway, W
