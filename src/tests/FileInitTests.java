@@ -41,6 +41,7 @@ public class FileInitTests {
 	}
 	
 	@Test
+	//tests the boards dimensions
 	public void testBoardDimensions() {
 		// Ensure we have the proper number of rows and columns
 		assertEquals(NUM_ROWS, board.getNumRows());
@@ -48,6 +49,7 @@ public class FileInitTests {
 	}
 	
 	@Test
+	//tests that all directions are present
 	public void FourDoorDirections() {
 		BoardCell cell = board.getCell(1, 6);
 		assertTrue(cell.isDoorway());
@@ -67,6 +69,7 @@ public class FileInitTests {
 	}
 	
 	@Test
+	//tests that the number of doorways detected are valid
 	public void testNumberOfDoorways() {
 		int numDoors = 0;
 		for (int row = 0; row < board.getNumRows(); row++)
@@ -80,15 +83,25 @@ public class FileInitTests {
 	
 	@Test
 	public void testRooms() {
-		// just test a standard room location
-		BoardCell cell = board.getCell( 2, 10);
+		//tests a normal room space
+		BoardCell cell = board.getCell( 0, 0);
 		Room room = board.getRoom( cell ) ;
+		assertTrue( room != null );
+		assertEquals( room.getName(), "Parking Garage" ) ;
+		assertFalse( cell.isLabel() );
+		assertFalse( cell.isRoomCenter() ) ;
+		assertFalse( cell.isDoorway()) ;
+		
+		//tests a room center space
+		cell = board.getCell( 2, 10);
+		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Arthur Lakes Library" ) ;
 		assertFalse( cell.isLabel() );
 		assertTrue( cell.isRoomCenter() ) ;
 		assertFalse( cell.isDoorway()) ;
 
+		//tests a room label space
 		cell = board.getCell( 8, 1);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
@@ -97,12 +110,14 @@ public class FileInitTests {
 		assertFalse( cell.isRoomCenter() ) ;
 		assertFalse( cell.isDoorway()) ;
 		
+		//tests a secret passage space
 		cell = board.getCell( 31, 16);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Alderson Hall" ) ;
 		assertTrue( cell.getSecretPassage() == 'P' );
 
+		//tests a walkway space
 		cell = board.getCell(6, 0);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
@@ -110,6 +125,7 @@ public class FileInitTests {
 		assertFalse( cell.isRoomCenter() );
 		assertFalse( cell.isLabel() );
 		
+		//tests and unused space
 		cell = board.getCell(31, 21);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
