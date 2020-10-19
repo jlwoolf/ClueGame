@@ -1,3 +1,64 @@
+commit 25f8d268bc59ab244fc923116b4cc4d225c388c5
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 19 00:51:31 2020 -0600
+
+    Changes to be committed:
+    Added comments to describe tests in file
+            modified:   src/tests/FileInitTests.java
+
+commit dba3094ee21a11b12c95e0e1fff75d99811b4a75
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Sun Oct 18 17:46:49 2020 -0600
+
+    Changes to be committed:
+    Forgot to add my own test file for my clue board.
+            modified:   data/ClueLayout.xlsx
+            modified:   data/ClueSetup.txt
+            modified:   src/clueGame/BoardCell.java
+            new file:   src/tests/FileInitTests.java
+
+commit c2b4ea2d24a5ecd60213b6fef73eb7582159d6e0
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Sun Oct 18 17:06:57 2020 -0600
+
+    Changes to be committed:
+    Added comments to files
+            modified:   src/clueGame/BadConfigFormatException.java
+            modified:   src/clueGame/Board.java
+            modified:   src/clueGame/Room.java
+
+commit 4b5744169bef79c2a2253fe27a3d9a86f68791f4
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Sun Oct 18 16:55:11 2020 -0600
+
+    Changes to be committed:
+    Implmented methods to properly statisfy each test file provided.
+            new file:   data/ClueLayout.csv
+            new file:   data/ClueLayout.xlsx
+            new file:   data/ClueLayout306.csv
+            new file:   data/ClueLayoutBadColumns306.csv
+            new file:   data/ClueLayoutBadRoom306.csv
+            new file:   data/ClueSetup.txt
+            new file:   data/ClueSetup306.txt
+            new file:   data/ClueSetupBadFormat306.txt
+            new file:   src/clueGame/BadConfigFormatException.java
+            new file:   src/clueGame/Board.java
+            new file:   src/clueGame/BoardCell.java
+            new file:   src/clueGame/DoorDirection.java
+            new file:   src/clueGame/Room.java
+            modified:   src/tests/BoardTestsExp.java
+            new file:   src/tests/ExceptionTests306.java
+            new file:   src/tests/FileInitTests306.java
+
+commit d7e364aeface6aaa367d526c49b0fd8702badba4
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Thu Oct 15 20:07:45 2020 -0600
+
+    Changes to be committed:
+    Updated gitlog and modified README for Canvas submission
+            modified:   README.md
+            modified:   gitlog.txt
+
 commit b38adafc794ac83eaa084b281c619b224e8efc6a
 Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
 Date:   Thu Oct 15 20:04:02 2020 -0600
