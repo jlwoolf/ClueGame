@@ -1,3 +1,14 @@
+commit da38328ba4bf18832f88de370c98647510ae2a96
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 26 22:58:51 2020 -0600
+
+    Changes to be committed:
+    Modified README to contain correct project
+    Modified gitignore to contain gitlog as the log updates with each commit
+    so the pushed log is never up to date so it seemed pointless to include.
+            modified:   .gitignore
+            modified:   README.md
+
 commit ad08252dc2b48664cb43ea2134265cbb7e3a803d
 Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
 Date:   Mon Oct 26 22:55:55 2020 -0600

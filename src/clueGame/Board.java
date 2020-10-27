@@ -176,10 +176,12 @@ public class Board {
 
 		for(BoardCell adjCell : startCell.getAdjList()) {
 			if(visited.contains(adjCell) || adjCell.isOccupied()) {
+				//checks if occupied is a room
+				if(adjCell.isOccupied() && adjCell.isRoom())
+					targetSet.add(adjCell);
 				continue;
 			} 
 			visited.add(adjCell);
-			
 			if(pathLength == 1 || adjCell.isRoom()) {
 				targetSet.add(adjCell);
 			} else {
@@ -195,9 +197,91 @@ public class Board {
 		return grid[i][j].getAdjList();
 	}
 	private void calcAdj() {
-		
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
+				//calculates the adjencies for the cell if its a room, doorway, or walkway
+				//calcRoomAdj only calculates adjacencies for room centers
+				if(grid[i][j].isRoom()) {
+					calcRoomAdj(i, j);
+				} else if (grid[i][j].isDoorway()) {
+					calcDoorwayAdj(i, j);
+				} else if (grid[i][j].getInitial() == 'W') {
+					calcWalkwayAdj(i, j);
+				}
+			}
+		}
 	}
 	
+	private void calcRoomAdj(int i, int j) {
+		//checks if room is a secret passage
+		if(grid[i][j].isSecretPassage()) {
+			roomMap.get(grid[i][j].getInitial()).getCenterCell().addAdj(roomMap.get(grid[i][j].getSecretPassage()).getCenterCell());
+		}
+		//checks for each adj if its a doorway that is pointing into active room
+		if(i != 0 && grid[i-1][j].isDoorway() && grid[i-1][j].getDoorDirection() == DoorDirection.DOWN) {
+			roomMap.get(grid[i][j].getInitial()).getCenterCell().addAdj(grid[i-1][j]);
+		}
+		if(i != numRows-1 && grid[i+1][j].isDoorway() && grid[i+1][j].getDoorDirection() == DoorDirection.UP) {
+			roomMap.get(grid[i][j].getInitial()).getCenterCell().addAdj(grid[i+1][j]);
+		}
+		if(j != 0 && grid[i][j-1].isDoorway() && grid[i][j-1].getDoorDirection() == DoorDirection.RIGHT) {
+			roomMap.get(grid[i][j].getInitial()).getCenterCell().addAdj(grid[i][j-1]);
+		}
+		if(j != numColumns-1 && grid[i][j+1].isDoorway() && grid[i][j+1].getDoorDirection() == DoorDirection.LEFT) {
+			roomMap.get(grid[i][j].getInitial()).getCenterCell().addAdj(grid[i][j+1]);
+		}
+	}
+	private void calcDoorwayAdj(int i, int j) {
+		//checks if each adj is a room that the active doorway is pointing into
+		//if it's not a room, checks if it's a walkway
+		if(i != 0) {
+			if(grid[i-1][j].isRoom()) {
+				if(grid[i][j].getDoorDirection() == DoorDirection.UP)
+					grid[i][j].addAdj(roomMap.get(grid[i-1][j].getInitial()).getCenterCell());
+				}
+			else if (grid[i-1][j].getInitial() == 'W')
+				grid[i][j].addAdj(grid[i-1][j]);
+		}
+		if(i != numRows-1) {
+			if(grid[i+1][j].isRoom()) {
+				if(grid[i][j].getDoorDirection() == DoorDirection.DOWN)
+					grid[i][j].addAdj(roomMap.get(grid[i+1][j].getInitial()).getCenterCell());
+			}
+			else if (grid[i+1][j].getInitial() == 'W')
+				grid[i][j].addAdj(grid[i+1][j]);
+		}
+		if(j != 0) {
+			if(grid[i][j-1].isRoom()) {
+				if(grid[i][j].getDoorDirection() == DoorDirection.LEFT)
+					grid[i][j].addAdj(roomMap.get(grid[i][j-1].getInitial()).getCenterCell());
+			}
+			else if (grid[i][j-1].getInitial() == 'W')
+				grid[i][j].addAdj(grid[i][j-1]);
+		}
+		if(j != numColumns-1) {
+			if(grid[i][j+1].isRoom()) {
+				if(grid[i][j].getDoorDirection() == DoorDirection.RIGHT)
+					grid[i][j].addAdj(roomMap.get(grid[i][j+1].getInitial()).getCenterCell());
+			}
+			else if (grid[i][j+1].getInitial() == 'W')
+				grid[i][j].addAdj(grid[i][j+1]);
+		}
+	}
+	private void calcWalkwayAdj(int i, int j) {
+		//checks if the adj cell is a walkway
+		if(i != 0 && grid[i-1][j].getInitial() == 'W') {
+			grid[i][j].addAdj(grid[i-1][j]);
+		}
+		if(i != numRows-1 && grid[i+1][j].getInitial() == 'W') {
+			grid[i][j].addAdj(grid[i+1][j]);
+		}
+		if(j != 0 && grid[i][j-1].getInitial() == 'W') {
+			grid[i][j].addAdj(grid[i][j-1]);
+		}
+		if(j != numColumns-1 && grid[i][j+1].getInitial() == 'W') {
+			grid[i][j].addAdj(grid[i][j+1]);
+		}
+	}
 	//getter for cell in grid
 	public BoardCell getCell(int i, int j) {
 		return grid[i][j];

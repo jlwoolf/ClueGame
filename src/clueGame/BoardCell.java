@@ -36,7 +36,7 @@ public class BoardCell {
 		this.row = row;
 		this.col = col;
 		
-		if(initial != 'W' || initial != 'X')
+		if(initial != 'W' && initial != 'X')
 			this.room = true;
 		else
 			this.room = false;
@@ -95,6 +95,11 @@ public class BoardCell {
 	}
 	public void setInitial(char initial) {
 		this.initial = initial;
+	}
+	public boolean isSecretPassage() {
+		if(secretPassage == 0)
+			return false;
+		return true;
 	}
 	public char getSecretPassage() {
 		return secretPassage;

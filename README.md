@@ -1,2 +1,2 @@
 Jonathan Woolf
-ClueGame C14A-2 JUnit Test Passing
+ClueGame C15A Adjacency and Target Validation
