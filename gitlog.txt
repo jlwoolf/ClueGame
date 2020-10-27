@@ -1,3 +1,24 @@
+commit ad08252dc2b48664cb43ea2134265cbb7e3a803d
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 26 22:55:55 2020 -0600
+
+    Changes to be committed:
+    Modified the excel spreadsheet to display adjacency test cells.
+            modified:   data/ClueLayout.xlsx
+            modified:   src/clueGame/Board.java
+            modified:   src/clueGame/BoardCell.java
+    Added test file for default clue board and created adjacency tests for
+    custom clue board.
+            new file:   src/tests/BoardAdjTargetTest.java
+            new file:   src/tests/BoardAdjTargetTest306.java
+
+commit e0439d05e89de10e042307579ea70725f49ee6c7
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Oct 19 00:52:10 2020 -0600
+
+    Changes to be committed:
+            modified:   gitlog.txt
+
 commit 25f8d268bc59ab244fc923116b4cc4d225c388c5
 Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
 Date:   Mon Oct 19 00:51:31 2020 -0600
