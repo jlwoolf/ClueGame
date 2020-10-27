@@ -171,7 +171,6 @@ public class Board {
 	public Set<BoardCell> getTargets() {
 		return targets;
 	}	
-	
 	private Set<BoardCell> recursiveTargets(BoardCell startCell, int pathLength) {
 		Set<BoardCell> targetSet = new HashSet<>();
 
@@ -191,19 +190,12 @@ public class Board {
 
 		return targetSet;
 	}
+	
+	public Set<BoardCell> getAdjList(int i, int j) {
+		return grid[i][j].getAdjList();
+	}
 	private void calcAdj() {
-		for(int i = 0; i < numRows; i++) {
-			for(int j = 0; j < numColumns; j++) {
-				if(i != 0)
-					grid[i][j].addAdj(this.getCell(i-1,j));
-				if(i != numRows-1)
-					grid[i][j].addAdj(this.getCell(i+1,j));
-				if(j != 0)
-					grid[i][j].addAdj(this.getCell(i,j-1));
-				if(j != numColumns-1)
-					grid[i][j].addAdj(this.getCell(i,j+1));
-			}
-		}
+		
 	}
 	
 	//getter for cell in grid

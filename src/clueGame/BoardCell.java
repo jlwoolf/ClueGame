@@ -36,7 +36,10 @@ public class BoardCell {
 		this.row = row;
 		this.col = col;
 		
-		this.room = false;
+		if(initial != 'W' || initial != 'X')
+			this.room = true;
+		else
+			this.room = false;
 		this.occupied = false;
 		this.roomLabel = false;
 		this.roomCenter = false;
