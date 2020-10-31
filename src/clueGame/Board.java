@@ -136,7 +136,7 @@ public class Board {
 			if(numColumns == 0)
 				numColumns = cols;
 			else if(numColumns != cols)
-				throw new BadConfigFormatException(numColumns, cols);
+				throw new BadConfigFormatException("Different number of columns in each row");
 
 			rows++;
 		}
