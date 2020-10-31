@@ -31,11 +31,6 @@ public class Board {
 	public void initialize() {
 		try {
 			loadSetupConfig();
-		} catch (FileNotFoundException | BadConfigFormatException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			loadLayoutConfig();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.printStackTrace();
