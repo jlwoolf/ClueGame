@@ -59,7 +59,7 @@ public class Board {
 			//throws error if otherwise
 			String[] lineContents = line.split(", ");
 			if(!lineContents[0].equals("Room") && !lineContents[0].equals("Space"))
-				throw new BadConfigFormatException();
+				throw new BadConfigFormatException("Setup contains more than two types of cells. Likely because a comment in setup is nost valid");
 
 			String roomName = lineContents[1];
 			Character roomChar = lineContents[2].charAt(0);
