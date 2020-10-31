@@ -18,19 +18,7 @@ public class BoardCell {
 	private Set<BoardCell> adjList;
 	private DoorDirection doorDirection;
 
-	//constructors
-	public BoardCell(int row, int col) {
-		super();
-		this.row = row;
-		this.col = col;
-		
-		this.room = false;
-		this.occupied = false;
-		this.roomLabel = false;
-		this.roomCenter = false;
-		this.adjList = new HashSet<>();
-		this.doorDirection = DoorDirection.NONE;
-	}
+	//constructor
 	public BoardCell(int row, int col, char initial) {
 		super();
 		this.row = row;
