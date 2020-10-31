@@ -94,7 +94,7 @@ public class Board {
 			for(int j = 0; j < numColumns; j++) {
 				//verify that room is a valid room from setup file
 				if(!roomMap.containsKey(lineContents[j].charAt(0))) {
-					throw new BadConfigFormatException();
+					throw new BadConfigFormatException("Room map contains a letter that isn't specified in the setup");
 				} else {
 					//update grid cell with proper infromation from file
 					grid[i][j] = new BoardCell(i, j, lineContents[j].charAt(0));
