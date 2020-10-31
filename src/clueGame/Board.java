@@ -59,7 +59,7 @@ public class Board {
 			//throws error if otherwise
 			String[] lineContents = line.split(", ");
 			if(!lineContents[0].equals("Room") && !lineContents[0].equals("Space"))
-				throw new BadConfigFormatException("Setup contains more than two types of cells. Likely because a comment in setup is nost valid");
+				throw new BadConfigFormatException("Setup contains more than a Room and Space option");
 
 			String roomName = lineContents[1];
 			Character roomChar = lineContents[2].charAt(0);
@@ -89,7 +89,7 @@ public class Board {
 			for(int j = 0; j < numColumns; j++) {
 				//verify that room is a valid room from setup file
 				if(!roomMap.containsKey(lineContents[j].charAt(0))) {
-					throw new BadConfigFormatException("Room map contains a letter that isn't specified in the setup");
+					throw new BadConfigFormatException("Layout contains a room not specified in the Setup file");
 				} else {
 					//update grid cell with proper infromation from file
 					grid[i][j] = new BoardCell(i, j, lineContents[j].charAt(0));
@@ -131,7 +131,7 @@ public class Board {
 			if(numColumns == 0)
 				numColumns = cols;
 			else if(numColumns != cols)
-				throw new BadConfigFormatException("Different number of columns in each row");
+				throw new BadConfigFormatException("Different number of rows and columns in Layout File");
 
 			rows++;
 		}
@@ -161,17 +161,18 @@ public class Board {
 	}
 	public Set<BoardCell> getTargets() {
 		return targets;
-	}	
+	}
 	private Set<BoardCell> recursiveTargets(BoardCell startCell, int pathLength) {
 		Set<BoardCell> targetSet = new HashSet<>();
 
 		for(BoardCell adjCell : startCell.getAdjList()) {
 			if(visited.contains(adjCell) || adjCell.isOccupied()) {
 				//checks if occupied is a room
-				if(adjCell.isOccupied() && adjCell.isRoom())
+				if(adjCell.isOccupied() && adjCell.isRoom()) {
 					targetSet.add(adjCell);
+				}
 				continue;
-			} 
+			}
 			visited.add(adjCell);
 			if(pathLength == 1 || adjCell.isRoom()) {
 				targetSet.add(adjCell);
@@ -194,9 +195,11 @@ public class Board {
 				//calcRoomAdj only calculates adjacencies for room centers
 				if(grid[i][j].isRoom()) {
 					calcRoomAdj(i, j);
-				} else if (grid[i][j].isDoorway()) {
+				}
+				if (grid[i][j].isDoorway()) {
 					calcDoorwayAdj(i, j);
-				} else if (grid[i][j].getInitial() == 'W') {
+				}
+				if (grid[i][j].getInitial() == 'W') {
 					calcWalkwayAdj(i, j);
 				}
 			}
@@ -224,7 +227,6 @@ public class Board {
 	}
 	private void calcDoorwayAdj(int i, int j) {
 		//checks if each adj is a room that the active doorway is pointing into
-		//if it's not a room, checks if it's a walkway
 		if(grid[i][j].getDoorDirection() == DoorDirection.UP) {
 			grid[i][j].addAdj(roomMap.get(grid[i-1][j].getInitial()).getCenterCell());
 		}
@@ -237,6 +239,7 @@ public class Board {
 		if(grid[i][j].getDoorDirection() == DoorDirection.RIGHT) {
 			grid[i][j].addAdj(roomMap.get(grid[i][j+1].getInitial()).getCenterCell());
 		}
+
 	}
 	private void calcWalkwayAdj(int i, int j) {
 		//checks if the adj cell is a walkway

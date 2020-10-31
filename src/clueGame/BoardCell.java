@@ -6,7 +6,7 @@ import java.util.Set;
 public class BoardCell {
 	private int row;
 	private int col;
-	
+
 	private boolean room;
 	private boolean occupied;
 	private boolean roomLabel;
@@ -23,20 +23,22 @@ public class BoardCell {
 		super();
 		this.row = row;
 		this.col = col;
-		
-		if(initial != 'W' && initial != 'X')
+
+		if(initial != 'W' && initial != 'X') {
 			this.room = true;
-		else
+		} else {
 			this.room = false;
+		}
+
 		this.occupied = false;
 		this.roomLabel = false;
 		this.roomCenter = false;
-		
+
 		this.initial = initial;
 		this.adjList = new HashSet<>();
 		this.doorDirection = DoorDirection.NONE;
 	}
-	
+
 	//integer getters and setters
 	public int getRow() {
 		return row;
@@ -116,5 +118,5 @@ public class BoardCell {
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
 	}
-	
+
 }
