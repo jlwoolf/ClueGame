@@ -12,14 +12,14 @@ public class Board {
 	private BoardCell[][] grid;
 	private int numRows;
 	private int numColumns;
-	
+
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
-	
+
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
-	
+
 	//Singleton Design Pattern implementation
 	private static Board theInstance = new Board();
 	private Board() {
@@ -34,16 +34,16 @@ public class Board {
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.printStackTrace();
 		}
-		
+
 		try {
 			loadLayoutConfig();
 		} catch (FileNotFoundException | BadConfigFormatException e) {
 			e.printStackTrace();
 		}
-		
+
 		calcAdj();
 	}
-	
+
 	//initialization methods
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
 		this.layoutConfigFile = "data/" + layoutConfigFile;
@@ -58,23 +58,23 @@ public class Board {
 		while(fileReader.hasNext()) {
 			String line = fileReader.nextLine();
 			if(line.contains("//"))
-					continue;
-			
+				continue;
+
 			//make sure only two types of spaces exist, Card and Other
 			//throws error if otherwise
 			String[] lineContents = line.split(", ");
 			if(!lineContents[0].equals("Room") && !lineContents[0].equals("Space"))
 				throw new BadConfigFormatException();
-			
+
 			String roomName = lineContents[1];
 			Character roomChar = lineContents[2].charAt(0);
-			
+
 			Room room = new Room(roomName);
 			roomMap.put(roomChar, room);
 		}
 		fileReader.close();
 	}
-	
+
 	//load layout config and check for errors
 	@SuppressWarnings("resource")
 	public void loadLayoutConfig() throws FileNotFoundException, BadConfigFormatException {
@@ -84,7 +84,7 @@ public class Board {
 		setRowsColumns(fileReader);
 		grid = new BoardCell[numRows][numColumns];
 		fileReader.close();
-		
+
 		//re-run through file line by line
 		fileReader = new Scanner(file);
 		for(int i = 0; i < numRows; i++) {
@@ -115,18 +115,14 @@ public class Board {
 					} else if(lineContents[j].contains(">")) {
 						grid[i][j].setDoorway(DoorDirection.RIGHT);
 					}
-					
-					try {
-						if(roomMap.containsKey(lineContents[j].charAt(1))) {
+
+					if(lineContents[j].length() > 1 && roomMap.containsKey(lineContents[j].charAt(1))) {
 						grid[i][j].setSecretPassage(lineContents[j].charAt(1));
-						}
-					} catch (StringIndexOutOfBoundsException e) {
-						continue;
 					}
 				}
 			}
 		}
-		
+
 	}
 	//calculate row and column counts
 	private void setRowsColumns(Scanner fileReader) throws BadConfigFormatException {
@@ -141,7 +137,7 @@ public class Board {
 				numColumns = cols;
 			else if(numColumns != cols)
 				throw new BadConfigFormatException(numColumns, cols);
-			
+
 			rows++;
 		}
 		numRows = rows;
@@ -153,7 +149,7 @@ public class Board {
 	public int getNumColumns() {
 		return numColumns;
 	}
-	
+
 	//getters for room of cell or character
 	public Room getRoom(char roomChar) {
 		return roomMap.get(roomChar);
@@ -161,7 +157,7 @@ public class Board {
 	public Room getRoom(BoardCell cell) {
 		return roomMap.get(cell.getInitial());
 	}
-	
+
 	//methods for getting target spaces
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
@@ -192,7 +188,7 @@ public class Board {
 
 		return targetSet;
 	}
-	
+
 	public Set<BoardCell> getAdjList(int i, int j) {
 		return grid[i][j].getAdjList();
 	}
@@ -211,7 +207,7 @@ public class Board {
 			}
 		}
 	}
-	
+
 	private void calcRoomAdj(int i, int j) {
 		//checks if room is a secret passage
 		if(grid[i][j].isSecretPassage()) {
@@ -238,7 +234,7 @@ public class Board {
 			if(grid[i-1][j].isRoom()) {
 				if(grid[i][j].getDoorDirection() == DoorDirection.UP)
 					grid[i][j].addAdj(roomMap.get(grid[i-1][j].getInitial()).getCenterCell());
-				}
+			}
 			else if (grid[i-1][j].getInitial() == 'W')
 				grid[i][j].addAdj(grid[i-1][j]);
 		}
