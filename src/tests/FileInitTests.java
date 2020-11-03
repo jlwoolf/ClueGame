@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import clueGame.Board;
 import clueGame.BoardCell;
+import clueGame.Card;
+import clueGame.CardType;
 import clueGame.DoorDirection;
 import clueGame.Room;
 

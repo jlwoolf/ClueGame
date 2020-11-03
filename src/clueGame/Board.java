@@ -16,7 +16,11 @@ public class Board {
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
-
+	
+	private Solution solution;
+	private Player[] players;
+	private Set<Card> deck;
+	
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 
@@ -52,7 +56,7 @@ public class Board {
 		//parse through file and add each room to roomMap
 		while(fileReader.hasNext()) {
 			String line = fileReader.nextLine();
-			if(line.contains("//"))
+			if(line.contains("//") || line.contains("Weapon") || line.contains("Person"))
 				continue;
 
 			//make sure only two types of spaces exist, Card and Other
@@ -151,6 +155,27 @@ public class Board {
 	}
 	public Room getRoom(BoardCell cell) {
 		return roomMap.get(cell.getInitial());
+	}
+	
+	public Player[] getPlayers() {
+		return players;
+	}
+	
+	public Set<Card> getDeck() {
+		return deck;
+	}
+	public Set<Card> getPeopleCards() {
+		return deck;
+	}
+	public Set<Card> getRoomCards() {
+		return deck;
+	}
+	public Set<Card> getWeaponCards() {
+		return deck;
+	}
+	
+	public Solution getSolution() {
+		return solution;
 	}
 
 	//methods for getting target spaces

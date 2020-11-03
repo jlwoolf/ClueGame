@@ -1,2 +1,2 @@
 Jonathan Woolf
-ClueGame C15A Adjacency and Target Validation
+ClueGame C19A-1 Setup Tests

@@ -13,3 +13,17 @@ Room, Parking Garage, P
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// weapon cards
+Weapon, Ballpoint Pen
+Weapon, 3D Printed Knife
+Weapon, Sulfuric Acid
+Weapon, Calculus 3 Textbook
+Weapon, High Current Taser
+Weapon, Gasoline
+// player cards
+Person, Mechanical Engineer
+Person, Electrical Engineer
+Person, Computer Scientist
+Person, Petroleum Engineer
+Person, Civil Engineer
+Person, Chemical Engineer
