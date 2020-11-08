@@ -6,9 +6,4 @@ public class HumanPlayer extends Player{
 		super(name);
 	}
 
-	@Override
-	void updateHand(Card card) {
-			
-	}
-
 }

@@ -17,14 +17,15 @@ public class Board {
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
 	
-	private Solution solution;
+	private Solution theAnswer;
 	private Player[] players;
 	private Set<Card> deck;
 	
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 
-	//Singleton Design Pattern implementation
+//singleton design
+/***************************************************************************************************************************************************/
 	private static Board theInstance = new Board();
 	private Board() {
 		super();
@@ -32,6 +33,9 @@ public class Board {
 	public static Board getInstance() {
 		return theInstance;
 	}
+	
+//initialization and initialization methods
+/***************************************************************************************************************************************************/
 	public void initialize() {
 		try {
 			loadSetupConfig();
@@ -43,7 +47,7 @@ public class Board {
 		calcAdj();
 	}
 
-	//initialization methods
+	//defines the file location for setup and layout
 	public void setConfigFiles(String layoutConfigFile, String setupConfigFile) {
 		this.layoutConfigFile = "data/" + layoutConfigFile;
 		this.setupConfigFile = "data/" + setupConfigFile;
@@ -123,6 +127,7 @@ public class Board {
 		}
 
 	}
+	
 	//calculate row and column counts
 	private void setRowsColumns(Scanner fileReader) throws BadConfigFormatException {
 		int rows = 0;
@@ -141,7 +146,9 @@ public class Board {
 		}
 		numRows = rows;
 	}
-	//getters for rows and columns
+
+//getters and setter functions
+/***************************************************************************************************************************************************/
 	public int getNumRows() {
 		return numRows;
 	}
@@ -149,7 +156,6 @@ public class Board {
 		return numColumns;
 	}
 
-	//getters for room of cell or character
 	public Room getRoom(char roomChar) {
 		return roomMap.get(roomChar);
 	}
@@ -157,6 +163,13 @@ public class Board {
 		return roomMap.get(cell.getInitial());
 	}
 	
+	public BoardCell getCell(int i, int j) {
+		return grid[i][j];
+	}
+	
+	public void setPlayers(Player[] players) {
+		this.players = players;
+	}
 	public Player[] getPlayers() {
 		return players;
 	}
@@ -174,11 +187,27 @@ public class Board {
 		return deck;
 	}
 	
+	public void setSolution(Solution solution) {
+		this.theAnswer = solution;
+	}
 	public Solution getSolution() {
-		return solution;
+		return theAnswer;
 	}
 
-	//methods for getting target spaces
+//functions for card handling
+/***************************************************************************************************************************************************/
+	public void deal() {
+		
+	}
+	public boolean checkAccusation(Solution accusation) {
+		return false;
+	}
+	public Card handleSuggestion(Player suggestingPlayer, Solution suggestion) {
+		return null;
+	}
+
+//functions for calculating  and getting targets
+/***************************************************************************************************************************************************/
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
 		visited.add(startCell);
@@ -210,6 +239,8 @@ public class Board {
 		return targetSet;
 	}
 
+//functions for calculating and getting adjacency
+/***************************************************************************************************************************************************/
 	public Set<BoardCell> getAdjList(int i, int j) {
 		return grid[i][j].getAdjList();
 	}
@@ -280,9 +311,5 @@ public class Board {
 		if(j != numColumns-1 && grid[i][j+1].getInitial() == 'W') {
 			grid[i][j].addAdj(grid[i][j+1]);
 		}
-	}
-	//getter for cell in grid
-	public BoardCell getCell(int i, int j) {
-		return grid[i][j];
-	}
+	}	
 }

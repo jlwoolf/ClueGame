@@ -1,3 +1,31 @@
+commit 2a243abdc6f75d64c8837bbee395b4b6baefd6b5
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Mon Nov 2 22:34:44 2020 -0700
+
+    Changes to be committed:
+    Added new weapon and person card names
+            modified:   data/ClueSetup.txt
+    Added necessary classes to setup tests for clue cards and players. Game
+    setup test contains those tests.
+            modified:   src/clueGame/Board.java
+            new file:   src/clueGame/Card.java
+            new file:   src/clueGame/CardType.java
+            new file:   src/clueGame/ComputerPlayer.java
+            new file:   src/clueGame/HumanPlayer.java
+            new file:   src/clueGame/Player.java
+            new file:   src/clueGame/Solution.java
+            modified:   src/tests/FileInitTests.java
+            new file:   src/tests/GameSetupTest.java
+
+commit 0e3553ee60fd57a3065afd2689880aa632b49a6e
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Fri Oct 30 21:06:52 2020 -0600
+
+    Changes to be committed:
+    General code spacing cleanup.
+            modified:   src/clueGame/Board.java
+            modified:   src/clueGame/BoardCell.java
+
 commit 59a55a0092a13de8fe2d5bdbf8e80942a7299e45
 Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
 Date:   Fri Oct 30 21:04:29 2020 -0600
