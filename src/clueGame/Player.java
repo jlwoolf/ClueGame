@@ -2,6 +2,7 @@ package clueGame;
 
 import java.awt.Color;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class Player {
@@ -17,17 +18,46 @@ public abstract class Player {
 		public Player(String name) {
 			super();
 			this.name = name;
+			
+			this.hand = new HashSet<Card>();
+			this.seenCards = new HashSet<Card>();
 		}
 		public void updateHand(Card card) {
 			this.hand.add(card);
+			this.seenCards.add(card);
 		}
 		public void updateSeen(Card seenCard) {
 			this.seenCards.add(seenCard);
 		}
 		public Card disproveSuggestion(Solution solution) {
-			return null;
+			Set<Card> disproveCards = new HashSet<>();
+			Card returnCard = null;
+			if(hand.contains(solution.getWeapon())) {
+				disproveCards.add(solution.getWeapon());
+			}
+			if(hand.contains(solution.getRoom())) {
+				disproveCards.add(solution.getRoom());
+			}
+			if(hand.contains(solution.getPerson())) {
+				disproveCards.add(solution.getPerson());
+			}
+			
+			if(disproveCards.size() == 0) {
+				return returnCard;
+			}
+			
+			int disproveIt = new Random().nextInt(disproveCards.size());
+			int i = 0;
+			for(Card card : disproveCards) {
+				if(i == disproveIt) {
+					returnCard = card;
+					break;
+				}
+				i++;
+			}
+			
+			return returnCard;
 		}
-		
 		public String getName() {
 			return name;
 		}

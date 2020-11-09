@@ -39,7 +39,7 @@ public class ComputerAITest {
 		Solution suggestion;
 	
 		//fill seenCards with all cards except for 4
-		for(Card card : board.getDeck()) {
+		for(Card card : board.getCards()) {
 			if(card.equals(new Card("Sulfuric Acid", CardType.WEAPON))) {
 				continue;
 			}
@@ -59,7 +59,7 @@ public class ComputerAITest {
 		int weaponCount = 0;
 		int personCount = 0;
 		for(int i = 0; i < 100; i++) {
-			suggestion = computerPlayer.createSuggestion(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), board.getDeck());
+			suggestion = computerPlayer.createSuggestion(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), board.getCards());
 			
 			if(suggestion.getWeapon().equals(new Card("Sulfuric Acid", CardType.WEAPON))) {
 				weaponCount++;
@@ -72,11 +72,11 @@ public class ComputerAITest {
 		assertTrue(weaponCount > 25 && weaponCount < 75);
 		assertTrue(personCount > 25 && personCount < 75);
 		
-		computerPlayer.updateHand(new Card("Gasoline", CardType.WEAPON));
-		computerPlayer.updateHand(new Card("Electrical Engineer", CardType.PERSON));
+		computerPlayer.updateSeen(new Card("Gasoline", CardType.WEAPON));
+		computerPlayer.updateSeen(new Card("Electrical Engineer", CardType.PERSON));
 		
 		//check if suggestion choose only card unseen and room card is current room
-		suggestion = computerPlayer.createSuggestion(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), board.getDeck());
+		suggestion = computerPlayer.createSuggestion(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), board.getCards());
 		assertEquals(board.getRoom('P').getName(), suggestion.getRoom().getCardName());
 		assertEquals(new Card("Mechanical Engineer", CardType.PERSON), suggestion.getPerson());
 		assertEquals(new Card("Sulfuric Acid", CardType.WEAPON), suggestion.getWeapon());

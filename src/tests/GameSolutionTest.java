@@ -38,7 +38,7 @@ public class GameSolutionTest {
 		Solution answer = new Solution(new Card("Mechanical Engineer", CardType.PERSON),
 				new Card("Brown Hall", CardType.ROOM),
 				new Card("Gasoline", CardType.WEAPON));
-		board.setSolution(answer);
+		board.setAnswer(answer);
 
 		Solution correct = new Solution(new Card("Mechanical Engineer", CardType.PERSON),
 				new Card("Brown Hall", CardType.ROOM),
@@ -103,10 +103,10 @@ public class GameSolutionTest {
 		assertEquals(null,board.handleSuggestion(board.getPlayers()[0], suggestion));
 
 		//suggestion the human player can disprove
-		assertEquals(new Card("Alderson Hall", CardType.ROOM),board.handleSuggestion(board.getPlayers()[0], suggestion));
+		assertEquals(new Card("Alderson Hall", CardType.ROOM),board.handleSuggestion(board.getPlayers()[1], suggestion));
 
 		//suggestion two players can disprove. First in the list.
 		board.getPlayers()[1].updateHand(new Card("Sulfuric Acid", CardType.WEAPON));
-		assertEquals(new Card("Alderson Hall", CardType.ROOM),board.handleSuggestion(board.getPlayers()[0], suggestion));
+		assertEquals(new Card("Alderson Hall", CardType.ROOM),board.handleSuggestion(board.getPlayers()[2], suggestion));
 	}
 }

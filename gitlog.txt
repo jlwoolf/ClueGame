@@ -1,3 +1,9 @@
+commit f831ca5fd42968174f906893c22d169c7b001be6
+Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
+Date:   Sat Nov 7 23:30:13 2020 -0700
+
+    Added the necessary suggestion and computerAI tests using functin definitions
+
 commit 2a243abdc6f75d64c8837bbee395b4b6baefd6b5
 Author: Jonathan Woolf <jlwoolf@mymail.mines.edu>
 Date:   Mon Nov 2 22:34:44 2020 -0700

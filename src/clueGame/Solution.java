@@ -19,4 +19,17 @@ public class Solution {
 	public Card getWeapon() {
 		return weapon;
 	}
+	
+	public boolean equals(Solution solution) {
+		if(!this.person.equals(solution.getPerson())) {
+			return false;
+		}
+		if(!this.room.equals(solution.getRoom())) {
+			return false;
+		}
+		if(!this.weapon.equals(solution.getWeapon())) {
+			return false;
+		}
+		return true;
+	}
 }

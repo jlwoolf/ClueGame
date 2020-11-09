@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
+
+import javafx.util.Pair;
 
 public class Board {
 	private BoardCell[][] grid;
@@ -16,16 +19,18 @@ public class Board {
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
-	
+	private Set<Pair<Integer, Integer>> startingLocations;
+
 	private Solution theAnswer;
 	private Player[] players;
 	private Set<Card> deck;
-	
+	private Set<Card> allCards;
+
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
 
-//singleton design
-/***************************************************************************************************************************************************/
+	//singleton design
+	/***************************************************************************************************************************************************/
 	private static Board theInstance = new Board();
 	private Board() {
 		super();
@@ -33,9 +38,9 @@ public class Board {
 	public static Board getInstance() {
 		return theInstance;
 	}
-	
-//initialization and initialization methods
-/***************************************************************************************************************************************************/
+
+	//initialization and initialization methods
+	/***************************************************************************************************************************************************/
 	public void initialize() {
 		try {
 			loadSetupConfig();
@@ -45,6 +50,8 @@ public class Board {
 		}
 
 		calcAdj();
+		createAnswer();
+		fillPlayers();
 	}
 
 	//defines the file location for setup and layout
@@ -57,25 +64,34 @@ public class Board {
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException{
 		Scanner fileReader = new Scanner(new File(setupConfigFile));
 		roomMap = new HashMap<Character, Room>();
+		allCards = new HashSet<Card>();
+		deck = new HashSet<Card>();
 		//parse through file and add each room to roomMap
 		while(fileReader.hasNext()) {
 			String line = fileReader.nextLine();
-			if(line.contains("//") || line.contains("Weapon") || line.contains("Person"))
+			if(line.contains("//"))
 				continue;
 
 			//make sure only two types of spaces exist, Card and Other
 			//throws error if otherwise
 			String[] lineContents = line.split(", ");
-			if(!lineContents[0].equals("Room") && !lineContents[0].equals("Space"))
-				throw new BadConfigFormatException("Setup contains more than a Room and Space option");
-
-			String roomName = lineContents[1];
-			Character roomChar = lineContents[2].charAt(0);
-
-			Room room = new Room(roomName);
-			roomMap.put(roomChar, room);
+			if(lineContents[0].equals("Room")  ) {
+				allCards.add(new Card(lineContents[1], CardType.ROOM));
+				roomMap.put(lineContents[2].charAt(0), new Room(lineContents[1]));
+			} else if (lineContents[0].equals("Space")) {
+				roomMap.put(lineContents[2].charAt(0), new Room(lineContents[1]));
+			} else if (lineContents[0].equals("Weapon")) {
+				allCards.add(new Card(lineContents[1], CardType.WEAPON));
+			} else if(lineContents[0].equals("Person")) {
+				allCards.add(new Card(lineContents[1], CardType.PERSON));
+			} else {
+				throw new BadConfigFormatException("Setup contains more than the three card types and space type");
+			}
 		}
 		fileReader.close();
+		for(Card card : allCards) {
+			deck.add(card);
+		}
 	}
 
 	//load layout config and check for errors
@@ -86,6 +102,7 @@ public class Board {
 		Scanner fileReader = new Scanner(file);
 		setRowsColumns(fileReader);
 		grid = new BoardCell[numRows][numColumns];
+		startingLocations = new HashSet<>();
 		fileReader.close();
 
 		//re-run through file line by line
@@ -103,6 +120,7 @@ public class Board {
 					grid[i][j] = new BoardCell(i, j, lineContents[j].charAt(0));
 					if(lineContents[j].contains("*")) {
 						grid[i][j].setRoomCenter(true);
+						grid[i][j].setRoomName(roomMap.get(lineContents[j].charAt(0)).getName());
 						roomMap.get(grid[i][j].getInitial()).setCenterCell(grid[i][j]);
 					}
 					if(lineContents[j].contains("#")) {
@@ -118,6 +136,9 @@ public class Board {
 					} else if(lineContents[j].contains(">")) {
 						grid[i][j].setDoorway(DoorDirection.RIGHT);
 					}
+					if(lineContents[j].contains("%")) {
+						startingLocations.add(new Pair<Integer,Integer>(i,j));
+					}
 
 					if(lineContents[j].length() > 1 && roomMap.containsKey(lineContents[j].charAt(1))) {
 						grid[i][j].setSecretPassage(lineContents[j].charAt(1));
@@ -127,7 +148,7 @@ public class Board {
 		}
 
 	}
-	
+
 	//calculate row and column counts
 	private void setRowsColumns(Scanner fileReader) throws BadConfigFormatException {
 		int rows = 0;
@@ -147,8 +168,8 @@ public class Board {
 		numRows = rows;
 	}
 
-//getters and setter functions
-/***************************************************************************************************************************************************/
+	//getters and setter functions
+	/***************************************************************************************************************************************************/
 	public int getNumRows() {
 		return numRows;
 	}
@@ -162,52 +183,170 @@ public class Board {
 	public Room getRoom(BoardCell cell) {
 		return roomMap.get(cell.getInitial());
 	}
-	
+
 	public BoardCell getCell(int i, int j) {
 		return grid[i][j];
 	}
-	
+
 	public void setPlayers(Player[] players) {
 		this.players = players;
 	}
 	public Player[] getPlayers() {
 		return players;
 	}
-	
+
 	public Set<Card> getDeck() {
 		return deck;
 	}
+	public Set<Card> getCards() {
+		return allCards;
+	}
 	public Set<Card> getPeopleCards() {
-		return deck;
+		Set<Card> peopleCards = new HashSet<Card>();
+
+		for(Card card : allCards) {
+			if(card.getCardType().equals(CardType.PERSON))
+				peopleCards.add(card);
+		}
+
+		return peopleCards;
 	}
 	public Set<Card> getRoomCards() {
-		return deck;
+		Set<Card> roomCards = new HashSet<Card>();
+
+		for(Card card : allCards) {
+			if(card.getCardType().equals(CardType.ROOM))
+				roomCards.add(card);
+		}
+
+		return roomCards;
 	}
 	public Set<Card> getWeaponCards() {
-		return deck;
+		Set<Card> weaponCards = new HashSet<Card>();
+
+		for(Card card : allCards) {
+			if(card.getCardType().equals(CardType.WEAPON))
+				weaponCards.add(card);
+		}
+
+		return weaponCards;
 	}
-	
-	public void setSolution(Solution solution) {
-		this.theAnswer = solution;
+
+	public void setAnswer(Solution answer) {
+		this.theAnswer = answer;
 	}
-	public Solution getSolution() {
+	public Solution getAnswer() {
 		return theAnswer;
 	}
 
-//functions for card handling
-/***************************************************************************************************************************************************/
-	public void deal() {
+	//functions for card handling
+	/***************************************************************************************************************************************************/
+	private void createAnswer() {
+		Card weapon = null, person = null, room = null;
+		int weaponIt = new Random().nextInt(this.getWeaponCards().size());
+		int peopleIt = new Random().nextInt(this.getPeopleCards().size());
+		int roomIt = new Random().nextInt(this.getRoomCards().size());
 		
+		int i = 0;
+		for(Card card : this.getWeaponCards()) {
+			if(i == weaponIt) {
+				weapon = card;
+				this.deck.remove(card);
+				break;
+			}
+			i++;
+		}
+		i = 0;
+		for(Card card : this.getPeopleCards()) {
+			if(i == peopleIt) {
+				person = card;
+				this.deck.remove(card);
+				break;
+			}
+			i++;
+		}
+		i = 0;
+		for(Card card : this.getRoomCards()) {
+			if(i == roomIt) {
+				room = card;
+				this.deck.remove(card);
+				break;
+			}
+			i++;
+		}
+		
+		theAnswer = new Solution(person, room, weapon);
+	}
+	
+	private void fillPlayers() {
+		players = new Player[6];
+		players[0] = new HumanPlayer("Player 1");
+		
+		for(int i = 1; i < 6; i++) {
+			players[i] = new ComputerPlayer("CPU " + i);
+		}
+		
+		int j = 0;
+		while(startingLocations.size() > 0) {
+			int startIt = new Random().nextInt(startingLocations.size());
+			int i = 0;
+			for(Pair<Integer,Integer> pair : startingLocations) {
+				if(i == startIt) {
+					players[j].setRow(pair.getKey());
+					players[j].setCol(pair.getValue());
+					j++;
+					startingLocations.remove(pair);
+					break;
+				}
+				i++;
+			}
+		}
+	}
+	
+	public void deal() {
+		int j = 0;
+		while(deck.size() > 0) {
+			int handSize = j / 6;
+			int playerIt = new Random().nextInt(players.length);
+			while(players[playerIt].getHand().size() > handSize) {
+				playerIt = new Random().nextInt(players.length);
+			}
+			
+			int it = new Random().nextInt(deck.size());
+			int i = 0;
+			for(Card card : deck) {
+				if(i == it) {
+					players[playerIt].updateHand(card);
+					deck.remove(card);
+					break;
+				}
+				i++;
+			}
+			j++;
+		}
 	}
 	public boolean checkAccusation(Solution accusation) {
-		return false;
+		if(theAnswer.equals(accusation)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	public Card handleSuggestion(Player suggestingPlayer, Solution suggestion) {
-		return null;
+		Card returnCard = null;
+		for(Player player : players) {
+			if(player.getName().equals(suggestingPlayer.getName()))
+				continue;
+			
+			if(returnCard == null) {
+				returnCard = player.disproveSuggestion(suggestion);
+			}
+		}
+		return returnCard;
 	}
 
-//functions for calculating  and getting targets
-/***************************************************************************************************************************************************/
+	//functions for calculating  and getting targets
+	/***************************************************************************************************************************************************/
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
 		visited.add(startCell);
@@ -239,8 +378,8 @@ public class Board {
 		return targetSet;
 	}
 
-//functions for calculating and getting adjacency
-/***************************************************************************************************************************************************/
+	//functions for calculating and getting adjacency
+	/***************************************************************************************************************************************************/
 	public Set<BoardCell> getAdjList(int i, int j) {
 		return grid[i][j].getAdjList();
 	}

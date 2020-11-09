@@ -1,2 +1,2 @@
 Jonathan Woolf
-ClueGame C19A-1 Setup Tests
+ClueGame C20A-1 Suggestion and ComputerAI tests

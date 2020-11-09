@@ -8,6 +8,7 @@ public class BoardCell {
 	private int col;
 
 	private boolean room;
+	private String roomName;
 	private boolean occupied;
 	private boolean roomLabel;
 	private boolean roomCenter;
@@ -117,6 +118,13 @@ public class BoardCell {
 	}
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
+	}
+	
+	public void setRoomName(String name) {
+		this.roomName = name;
+	}
+	public String getRoomName() {
+		return roomName;
 	}
 
 }
