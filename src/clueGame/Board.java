@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-import javafx.util.Pair;
-
 public class Board {
 	private BoardCell[][] grid;
 	private int numRows;
@@ -19,7 +17,7 @@ public class Board {
 	private String layoutConfigFile;
 	private String setupConfigFile;
 	private Map<Character, Room> roomMap;
-	private Set<Pair<Integer, Integer>> startingLocations;
+	private Set<Integer[]> startingLocations;
 
 	private Solution theAnswer;
 	private Player[] players;
@@ -137,7 +135,8 @@ public class Board {
 						grid[i][j].setDoorway(DoorDirection.RIGHT);
 					}
 					if(lineContents[j].contains("%")) {
-						startingLocations.add(new Pair<Integer,Integer>(i,j));
+						Integer[] location = {i,j};
+						startingLocations.add(location);
 					}
 
 					if(lineContents[j].length() > 1 && roomMap.containsKey(lineContents[j].charAt(1))) {
@@ -290,10 +289,10 @@ public class Board {
 		while(startingLocations.size() > 0) {
 			int startIt = new Random().nextInt(startingLocations.size());
 			int i = 0;
-			for(Pair<Integer,Integer> pair : startingLocations) {
+			for(Integer[] pair : startingLocations) {
 				if(i == startIt) {
-					players[j].setRow(pair.getKey());
-					players[j].setCol(pair.getValue());
+					players[j].setRow(pair[0]);
+					players[j].setCol(pair[1]);
 					j++;
 					startingLocations.remove(pair);
 					break;

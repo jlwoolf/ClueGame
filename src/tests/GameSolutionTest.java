@@ -81,7 +81,7 @@ public class GameSolutionTest {
 				count++;
 			}
 		}
-		assertTrue(count > 25 && count < 75);
+		assertTrue(count > 15 && count < 85);
 
 		//check if no cards
 		suggestion = new Solution(new Card("Mechanical Engineer", CardType.PERSON),

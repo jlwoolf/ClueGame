@@ -69,8 +69,8 @@ public class ComputerAITest {
 			}
 		}
 		
-		assertTrue(weaponCount > 25 && weaponCount < 75);
-		assertTrue(personCount > 25 && personCount < 75);
+		assertTrue(weaponCount > 15 && weaponCount < 85);
+		assertTrue(personCount > 15 && personCount < 85);
 		
 		computerPlayer.updateSeen(new Card("Gasoline", CardType.WEAPON));
 		computerPlayer.updateSeen(new Card("Electrical Engineer", CardType.PERSON));
@@ -98,7 +98,7 @@ public class ComputerAITest {
 				walkwayCount++;
 			}
 		}
-		assertTrue(walkwayCount > 25 && walkwayCount < 75);
+		assertTrue(walkwayCount > 15 && walkwayCount < 85);
 		
 		//if contains room not seen choose room
 		board.calcTargets(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), 3);
@@ -113,6 +113,6 @@ public class ComputerAITest {
 				walkwayCount++;
 			}
 		}
-		assertTrue(walkwayCount > 25 && walkwayCount < 75);
+		assertTrue(walkwayCount > 15 && walkwayCount < 85);
 	}
 }
