@@ -22,6 +22,17 @@ public abstract class Player {
 			this.hand = new HashSet<Card>();
 			this.seenCards = new HashSet<Card>();
 		}
+		
+		public Player(String name, int row, int col, Color color) {
+			super();
+			this.name = name;
+			this.row = row;
+			this.col = col;
+			this.color = color;
+			
+			this.hand = new HashSet<Card>();
+			this.seenCards = new HashSet<Card>();
+		}
 		public void updateHand(Card card) {
 			this.hand.add(card);
 			this.seenCards.add(card);

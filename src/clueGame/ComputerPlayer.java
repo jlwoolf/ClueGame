@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -8,6 +9,10 @@ public class ComputerPlayer extends Player{
 
 	public ComputerPlayer(String name) {
 		super(name);
+	}
+	
+	public ComputerPlayer(String name, int row, int col, Color color) {
+		super(name, row, col, color);
 	}
 
 	public Solution createSuggestion(BoardCell room, Set<Card> allCards) {

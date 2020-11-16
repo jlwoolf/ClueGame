@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.awt.Color;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -33,9 +34,7 @@ public class ComputerAITest {
 
 	@Test
 	public void testComputerSuggestion() {
-		ComputerPlayer computerPlayer = new ComputerPlayer("testPlayer");
-		computerPlayer.setRow(2);
-		computerPlayer.setCol(2);
+		ComputerPlayer computerPlayer = new ComputerPlayer("testPlayer", 2, 2, Color.BLUE);
 		Solution suggestion;
 	
 		//fill seenCards with all cards except for 4
@@ -84,9 +83,7 @@ public class ComputerAITest {
 	
 	@Test
 	public void testComputerTarget() {
-		ComputerPlayer computerPlayer = new ComputerPlayer("testPlayer");
-		computerPlayer.setRow(1);
-		computerPlayer.setCol(7);
+		ComputerPlayer computerPlayer = new ComputerPlayer("testPlayer", 1, 7, Color.BLUE);
 		
 		//if no room, choose randomly
 		board.calcTargets(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), 1);
