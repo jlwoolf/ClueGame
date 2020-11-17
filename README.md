@@ -1,2 +1,2 @@
 Jonathan Woolf
-ClueGame C20A-1 Suggestion and ComputerAI tests
+ClueGame C21A-2 Known Cards GUI
