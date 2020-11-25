@@ -1,8 +1,7 @@
 #Eclipse Specific
 .classpath
 .project
-.zip
-gitlog.txt	
+.zip	
 
 # Compiled class file
 *.class

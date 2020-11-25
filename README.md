@@ -1,2 +1,2 @@
 Jonathan Woolf
-ClueGame C21A-2 Known Cards GUI
+ClueGame C22A Game Board GUI
