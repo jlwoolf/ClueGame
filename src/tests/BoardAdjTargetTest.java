@@ -1,16 +1,13 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Set;
-
+import clueGame.Board;
+import clueGame.BoardCell;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import clueGame.Board;
-import clueGame.BoardCell;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardAdjTargetTest {
 	private static Board board;

@@ -1,5 +1,6 @@
 package clueGame;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class BoardCell {
 	private char initial;
 	private char secretPassage;
 
-	private Set<BoardCell> adjList;
+	private final Set<BoardCell> adjList;
 	private DoorDirection doorDirection;
 
 	//constructor
@@ -25,11 +26,7 @@ public class BoardCell {
 		this.row = row;
 		this.col = col;
 
-		if(initial != 'W' && initial != 'X') {
-			this.room = true;
-		} else {
-			this.room = false;
-		}
+		this.room = initial != 'W' && initial != 'X';
 
 		this.occupied = false;
 		this.roomLabel = false;
@@ -88,9 +85,7 @@ public class BoardCell {
 		this.initial = initial;
 	}
 	public boolean isSecretPassage() {
-		if(secretPassage == 0)
-			return false;
-		return true;
+		return secretPassage != 0;
 	}
 	public char getSecretPassage() {
 		return secretPassage;
@@ -108,10 +103,7 @@ public class BoardCell {
 	}
 	//doorway getters and setters
 	public boolean isDoorway() {
-		if(doorDirection == DoorDirection.NONE)
-			return false;
-		else
-			return true;
+		return doorDirection != DoorDirection.NONE;
 	}
 	public void setDoorway(DoorDirection direction) {
 		doorDirection = direction;
@@ -119,7 +111,8 @@ public class BoardCell {
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
 	}
-	
+
+	//room getters and setters
 	public void setRoomName(String name) {
 		this.roomName = name;
 	}
@@ -127,4 +120,38 @@ public class BoardCell {
 		return roomName;
 	}
 
+	//function to draw a board cell
+	public void drawCell(Graphics g, int size, int[] wallPadding) {
+		if(room) {
+			g.setColor(new Color(137, 117, 165));
+			g.fillRect(col * size + wallPadding[0], row * size + wallPadding[1], size, size);
+		} else if(initial == 'W') {
+			g.setColor(new Color(255, 198, 109));
+			g.fillRect(col * size + 1 + wallPadding[0], row * size + 1 + wallPadding[1], size - 2, size - 2);
+		} else {
+			g.setColor(new Color(203, 113, 46));
+			g.fillRect(col * size + wallPadding[0], row * size + wallPadding[1], size, size);
+		}
+	}
+
+	//function to draw a door
+	public void drawDoor(Graphics g, int size, int[] wallPadding) {
+		g.setColor(new Color(104, 151, 187));
+		switch (doorDirection) {
+			case UP:
+				g.fillRect(col*size + 1 + wallPadding[0], row*size - size/4 + 1 + wallPadding[1], size - 2, size/4);
+				break;
+			case DOWN:
+				g.fillRect(col*size + 1 + wallPadding[0], row*size + size - 1 + wallPadding[1], size - 2, size/4);
+				break;
+			case LEFT:
+				g.fillRect(col*size - size/4 + 1 + wallPadding[0], row*size + 1 + + wallPadding[1], size/4, size - 2);
+				break;
+			case RIGHT:
+				g.fillRect(col*size + size - 1 + wallPadding[0], row*size + 1 + wallPadding[1], size/4, size - 2);
+				break;
+			case NONE:
+				break;
+		}
+	}
 }

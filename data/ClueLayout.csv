@@ -1,6 +1,6 @@
-P,P,P,P,P,P,W,W%,L,L,L,L,L,L,W%,W,C,C,C,C,X,X
-P,P,P,P,P,P,W<,W,L,L,L,L,L,L,W,W,C,C,C,C,X,X
-P,P#,P*,P,P,P,W,W,L,L#,L*,L,L,L,W<,W>,C#,C,C*,C,X,X
+P,P,P,P,P,P,W,W%,L,L,L,L,L,L,W,W,C,C,C,C,X,X
+P,P#,P,P,P,P,W<,W,L,L#,L,L,L,L,W,W,C,C,C,C,X,X
+P,P,P*,P,P,P,W,W,L,L,L*,L,L,L,W<,W>,C,C#,C*,C,X,X
 P,P,P,P,P,P,W,W,L,L,L,L,L,L,W,W,C,C,C,C,X,X
 PA,P,P,P,P,W,W,W,L,L,L,L,L,L,W,W,C,C,C,C,C,C
 W^,W,W,W,W,W,W,W,L,L,L,L,L,L,W,W,CR,C,C,C,C,C
@@ -24,9 +24,9 @@ W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W
 W,W,W,W,R,R,W<,W,Wv,W,W,W,W,W,W,W,W,W,W,Wv,W,W
 Wv,R,R,R,R,R,W,W,B,B,W,B,B,B,W,W,W,W,A,A,A,W
 RC,R,R,R,R,R,W,W,B,B,W,B,B,B,W<,W,A,A,A,A,A,A
-R,R#,R,R,R,R,W,W,B,B#,B,B,B,B,W,W,A,A#,A*,A,A,A
-R,R,R*,R,R,R,W,W,B,B,B*,B,B,B,W,W,A,A,A,A,A,A
+R,R,R,R,R,R,W,W,B,B,B,B,B,B,W,W,A,A#,A*,A,A,A
+R,R#,R*,R,R,R,W,W,B,B#,B*,B,B,B,W,W,A,A,A,A,A,A
 R,RC,R,R,R,R,W,W,B,B,B,B,B,B,W,W,A,A,X,X,A,A
 R,R,R,R,R,R,W,W,B,B,B,B,B,B,W,W,A,A,X,X,A,A
 R,R,R,R,R,R,W,W,B,B,B,B,B,B,W,W,A,A,X,X,X,X
-R,R,R,R,R,W^,W,W>,B,B,B,B,B,B,W<,W>,AP,A,X,X,X,X
+R,R,R,R,R,W^,W,W>,B,B,B,B,B,B,W<%,W>,AP,A,X,X,X,X

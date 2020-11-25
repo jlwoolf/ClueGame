@@ -11,3 +11,17 @@ Room, Hall, H
 // other spaces on board
 Space, Unused, X
 Space, Walkway, W
+// weapon cards
+Weapon, Revolver
+Weapon, Dagger
+Weapon, Lead Pipe
+Weapon, Rope
+Weapon, Candlestick
+Weapon, Wrench
+// player cards
+Person, Mrs. White
+Person, Professor Plum
+Person, Mr. Green
+Person, Mrs. Peacock
+Person, Miss Scarlet
+Person, Colonel Mustard

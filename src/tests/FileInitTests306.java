@@ -6,9 +6,8 @@ package tests;
 
 // Doing a static import allows me to write assertEquals rather than
 // Assert.assertEquals
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -88,7 +87,7 @@ public class FileInitTests306 {
 				if (cell.isDoorway())
 					numDoors++;
 			}
-		Assert.assertEquals(17, numDoors);
+		assertEquals(17, numDoors);
 	}
 
 	// Test a few room cells to ensure the room initial is correct.

@@ -1,6 +1,6 @@
 package clueGame;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -14,7 +14,8 @@ public abstract class Player {
 
 		private int row;
 		private int col;
-		
+
+		//constructors
 		public Player(String name) {
 			super();
 			this.name = name;
@@ -22,7 +23,6 @@ public abstract class Player {
 			this.hand = new HashSet<Card>();
 			this.seenCards = new HashSet<Card>();
 		}
-		
 		public Player(String name, int row, int col, Color color) {
 			super();
 			this.name = name;
@@ -33,6 +33,8 @@ public abstract class Player {
 			this.hand = new HashSet<Card>();
 			this.seenCards = new HashSet<Card>();
 		}
+
+		//functions that add a card to a players hand or seen cards
 		public void updateHand(Card card) {
 			this.hand.add(card);
 			this.seenCards.add(card);
@@ -40,6 +42,8 @@ public abstract class Player {
 		public void updateSeen(Card seenCard) {
 			this.seenCards.add(seenCard);
 		}
+
+		//function for a player to disprove a suggestion
 		public Card disproveSuggestion(Solution solution) {
 			Set<Card> disproveCards = new HashSet<>();
 			Card returnCard = null;
@@ -69,10 +73,14 @@ public abstract class Player {
 			
 			return returnCard;
 		}
+
+		//getters and setters for the player
 		public String getName() {
 			return name;
 		}
-
+		public void setColor(Color color) {
+			this.color = color;
+		}
 		public Color getColor() {
 			return color;
 		}
@@ -109,5 +117,11 @@ public abstract class Player {
 		}
 		public int getCol() {
 			return col;
+		}
+
+		//function for drawing the player
+		public void drawPlayer(Graphics g, int size, int[] wallPadding) {
+			g.setColor(color);
+			g.fillOval(col*size + wallPadding[0], row*size + wallPadding[1], size, size);
 		}
 }

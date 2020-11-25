@@ -12,168 +12,81 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 public class GameCardsPanel extends JPanel{
-	private JPanel peopleHand;
-	private JPanel peopleSeen;
+	private Map<CardType, JPanel> hands;
+	private Map<CardType, JPanel> seens;
 
-	private JPanel roomHand;
-	private JPanel roomSeen;
-
-	private JPanel weaponHand;
-	private JPanel weaponSeen;
-
+	//constructor to create the the panel
+	//adds different card panel for person, room, and weapons
 	public GameCardsPanel() {
+		hands = new HashMap<>();
+		seens = new HashMap<>();
+
 		setLayout(new GridLayout(3,0));
 		setBorder(new TitledBorder(new EtchedBorder(), "Known Cards"));
-		add(peoplePanel());
-		add(roomPanel());
-		add(weaponsPanel());
+		add(cardPanel(CardType.PERSON));
+		add(cardPanel(CardType.ROOM));
+		add(cardPanel(CardType.WEAPON));
 	}
 
+	//attempt to add a none card and remove it that I haven't quite figured out
 	private JTextField none() {
 		JTextField field = new JTextField("None");
 		field.setBackground(Color.WHITE);
 		field.setEditable(false);
 		return field;
 	}
-	
-	private JPanel peoplePanel() {
+
+	//creates a card panel for a given card type
+	private JPanel cardPanel(CardType cardType) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2,0));
-		panel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		panel.setBorder(new TitledBorder(new EtchedBorder(), cardType.toString()));
 
-		peopleHand = new JPanel();
-		peopleHand.setLayout(new GridLayout(0,1));
+		JPanel hand = new JPanel();
+		hand.setLayout(new GridLayout(0,1));
 
 		JLabel handLabel = new JLabel("In Hand: ");
-		peopleHand.add(handLabel);
-		panel.add(peopleHand);
+		hand.add(handLabel);
+		panel.add(hand);
 
-		peopleSeen = new JPanel();
-		peopleSeen.setLayout(new GridLayout(0,1));
+		JPanel seen = new JPanel();
+		seen.setLayout(new GridLayout(0,1));
 
 		JLabel seenLabel = new JLabel("Seen: ");
-		peopleSeen.add(seenLabel);
-		panel.add(peopleSeen);
+		seen.add(seenLabel);
+		panel.add(seen);
+
+		hands.put(cardType, hand);
+		seens.put(cardType, seen);
 
 		return panel;
 	}
-	private JPanel roomPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2,0));
-		panel.setBorder(new TitledBorder(new EtchedBorder(), "People"));
 
-		roomHand = new JPanel();
-		roomHand.setLayout(new GridLayout(0,1));
-
-		JLabel handLabel = new JLabel("In Hand: ");
-		roomHand.add(handLabel);
-		panel.add(roomHand);
-
-		roomSeen = new JPanel();
-		roomSeen.setLayout(new GridLayout(0,1));
-
-		JLabel seenLabel = new JLabel("Seen: ");
-		roomSeen.add(seenLabel);
-		panel.add(roomSeen);
-
-		return panel;
-	}
-	private JPanel weaponsPanel() {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2,0));
-		panel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
-
-		weaponHand = new JPanel();
-		weaponHand.setLayout(new GridLayout(0,1));
-
-		JLabel handLabel = new JLabel("In Hand: ");
-		weaponHand.add(handLabel);
-		panel.add(weaponHand);
-
-		weaponSeen = new JPanel();
-		weaponSeen.setLayout(new GridLayout(0,1));
-
-		JLabel seenLabel = new JLabel("Seen: ");
-		weaponSeen.add(seenLabel);
-		panel.add(weaponSeen);
-
-		return panel;
-
-	}
-
-	private void update() {
-
-	}
-
+	//adds a seen card to panel
 	public void addSeenCard(Card card, Color color) {
 		JTextField cardField = new JTextField(card.getCardName());
 		cardField.setEditable(false);
 		cardField.setBackground(color);
-		switch (card.getCardType()) {
-		case PERSON:
-			peopleSeen.add(cardField);
-			peopleSeen.revalidate();
-			break;
-		case ROOM:
-			roomSeen.add(cardField);
-			roomSeen.revalidate();
-			break;
-		case WEAPON:
-			weaponSeen.add(cardField);
-			weaponSeen.revalidate();
-			break;
-		default:
-			break;
-		}
 
+		seens.get(card.cardType).add(cardField);
+		revalidate();
+		repaint();
 	}
 
-public void addHandCard(Card card, Color color) {		
-	JTextField cardField = new JTextField(card.getCardName());
-	cardField.setBackground(color);
-	cardField.setEditable(false);
-	switch (card.getCardType()) {
-	case PERSON:
-		peopleHand.add(cardField);
-		peopleHand.revalidate();
-		break;
-	case ROOM:
-		roomHand.add(cardField);
-		roomHand.revalidate();
-		break;
-	case WEAPON:
-		weaponHand.add(cardField);
-		weaponHand.revalidate();
-		break;
-	default:
-		break;
+	//adds a hand card to panel
+	public void addHandCard(Card card, Color color) {		
+		JTextField cardField = new JTextField(card.getCardName());
+		cardField.setBackground(color);
+		cardField.setEditable(false);
+
+		hands.get(card.cardType).add(cardField);
+		revalidate();
+		repaint();
 	}
-}
-
-public static void main(String[] args) {
-	GameCardsPanel panel = new GameCardsPanel();  // create the panel
-	JFrame frame = new JFrame();  // create the frame
-	frame.setContentPane(panel); // put the panel in the frame
-	frame.setSize(180, 750);  // size the frame
-	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
-	frame.setVisible(true); // make it visible	
-
-	panel.addHandCard(new Card("Test Card", CardType.PERSON), Color.WHITE);
-	panel.addHandCard(new Card("Test Card", CardType.PERSON), Color.WHITE);
-	
-	panel.addHandCard(new Card("Test Card", CardType.ROOM), Color.WHITE);
-	
-	panel.addSeenCard(new Card("Test Card", CardType.ROOM), Color.CYAN);
-	panel.addSeenCard(new Card("Test Card", CardType.WEAPON), Color.CYAN);
-	panel.addSeenCard(new Card("Test Card", CardType.WEAPON), Color.CYAN);
-	
-	panel.addSeenCard(new Card("Test Card", CardType.PERSON), Color.YELLOW);
-	panel.addSeenCard(new Card("Test Card", CardType.WEAPON), Color.YELLOW);
-	
-	panel.addSeenCard(new Card("Test Card", CardType.ROOM), Color.MAGENTA);
-
-}
 }

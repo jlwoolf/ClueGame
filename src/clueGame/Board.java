@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -9,10 +11,14 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Board {
+import javax.swing.JPanel;
+
+public class Board extends JPanel{
 	private BoardCell[][] grid;
 	private int numRows;
 	private int numColumns;
+	private int width;
+	private int height;
 
 	private String layoutConfigFile;
 	private String setupConfigFile;
@@ -21,6 +27,7 @@ public class Board {
 
 	private Solution theAnswer;
 	private Player[] players;
+	private Color[] playerColors;
 	private Set<Card> deck;
 	private Set<Card> allCards;
 
@@ -29,7 +36,7 @@ public class Board {
 
 	//singleton design
 	/***************************************************************************************************************************************************/
-	private static Board theInstance = new Board();
+	private static final Board theInstance = new Board();
 	private Board() {
 		super();
 	}
@@ -73,23 +80,26 @@ public class Board {
 			//make sure only two types of spaces exist, Card and Other
 			//throws error if otherwise
 			String[] lineContents = line.split(", ");
-			if(lineContents[0].equals("Room")  ) {
-				allCards.add(new Card(lineContents[1], CardType.ROOM));
-				roomMap.put(lineContents[2].charAt(0), new Room(lineContents[1]));
-			} else if (lineContents[0].equals("Space")) {
-				roomMap.put(lineContents[2].charAt(0), new Room(lineContents[1]));
-			} else if (lineContents[0].equals("Weapon")) {
-				allCards.add(new Card(lineContents[1], CardType.WEAPON));
-			} else if(lineContents[0].equals("Person")) {
-				allCards.add(new Card(lineContents[1], CardType.PERSON));
-			} else {
-				throw new BadConfigFormatException("Setup contains more than the three card types and space type");
+			switch (lineContents[0]) {
+				case "Room":
+					allCards.add(new Card(lineContents[1], CardType.ROOM));
+					roomMap.put(lineContents[2].charAt(0), new Room(lineContents[1]));
+					break;
+				case "Space":
+					roomMap.put(lineContents[2].charAt(0), new Room(lineContents[1]));
+					break;
+				case "Weapon":
+					allCards.add(new Card(lineContents[1], CardType.WEAPON));
+					break;
+				case "Person":
+					allCards.add(new Card(lineContents[1], CardType.PERSON));
+					break;
+				default:
+					throw new BadConfigFormatException("Setup contains more than the three card types and space type");
 			}
 		}
 		fileReader.close();
-		for(Card card : allCards) {
-			deck.add(card);
-		}
+		deck.addAll(allCards);
 	}
 
 	//load layout config and check for errors
@@ -151,7 +161,7 @@ public class Board {
 	//calculate row and column counts
 	private void setRowsColumns(Scanner fileReader) throws BadConfigFormatException {
 		int rows = 0;
-		int cols = 0;
+		int cols;
 		numColumns = 0;
 		while(fileReader.hasNextLine()) {
 			String line = fileReader.nextLine();
@@ -245,7 +255,7 @@ public class Board {
 		int weaponIt = new Random().nextInt(this.getWeaponCards().size());
 		int peopleIt = new Random().nextInt(this.getPeopleCards().size());
 		int roomIt = new Random().nextInt(this.getRoomCards().size());
-		
+
 		int i = 0;
 		for(Card card : this.getWeaponCards()) {
 			if(i == weaponIt) {
@@ -273,24 +283,41 @@ public class Board {
 			}
 			i++;
 		}
-		
+
 		theAnswer = new Solution(person, room, weapon);
 	}
-	
+
+	private void fillColors() {
+		playerColors = new Color[6];
+		playerColors[0] = new Color(255,255,255);
+		playerColors[1] = new Color(119,2,109);
+		playerColors[2] = new Color(118,169,4);
+		playerColors[3] = new Color(80,173,207);
+		playerColors[4] = new Color(244,1,0);
+		playerColors[5] = new Color(245,237,16);
+	}
+
 	private void fillPlayers() {
+		fillColors();
 		players = new Player[6];
-		players[0] = new HumanPlayer("Player 1");
-		
-		for(int i = 1; i < 6; i++) {
-			players[i] = new ComputerPlayer("CPU " + i);
+
+		int i = 0;
+		for(Card card : getPeopleCards()) {
+			if(i == 0) {
+				players[i] = new HumanPlayer(card.getCardName());
+			} else {
+				players[i] = new ComputerPlayer(card.getCardName());
+			}
+			i++;
 		}
-		
+
 		int j = 0;
 		while(startingLocations.size() > 0) {
 			int startIt = new Random().nextInt(startingLocations.size());
-			int i = 0;
+			i = 0;
 			for(Integer[] pair : startingLocations) {
 				if(i == startIt) {
+					players[j].setColor(playerColors[j]);
 					players[j].setRow(pair[0]);
 					players[j].setCol(pair[1]);
 					j++;
@@ -301,7 +328,7 @@ public class Board {
 			}
 		}
 	}
-	
+
 	public void deal() {
 		int j = 0;
 		while(deck.size() > 0) {
@@ -310,7 +337,7 @@ public class Board {
 			while(players[playerIt].getHand().size() > handSize) {
 				playerIt = new Random().nextInt(players.length);
 			}
-			
+
 			int it = new Random().nextInt(deck.size());
 			int i = 0;
 			for(Card card : deck) {
@@ -325,18 +352,14 @@ public class Board {
 		}
 	}
 	public boolean checkAccusation(Solution accusation) {
-		if(theAnswer.equals(accusation)) {
-			return true;
-		} else {
-			return false;
-		}
+		return theAnswer.equals(accusation);
 	}
 	public Card handleSuggestion(Player suggestingPlayer, Solution suggestion) {
 		Card returnCard = null;
 		for(Player player : players) {
 			if(player.getName().equals(suggestingPlayer.getName()))
 				continue;
-			
+
 			if(returnCard == null) {
 				returnCard = player.disproveSuggestion(suggestion);
 			}
@@ -449,5 +472,38 @@ public class Board {
 		if(j != numColumns-1 && grid[i][j+1].getInitial() == 'W') {
 			grid[i][j].addAdj(grid[i][j+1]);
 		}
-	}	
+	}
+
+	//function for drawing the board
+	/***************************************************************************************************************************************************/
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		int cellSize = Math.min(getWidth()/numColumns, getHeight()/numRows);
+		int[] wallPadding = {(getWidth() - numColumns*cellSize)/2, (getHeight() - numRows*cellSize)/2};
+
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, getWidth(), getHeight());
+
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
+				grid[i][j].drawCell(g, cellSize, wallPadding);
+			}
+		}
+
+		for(int i = 0; i < numRows; i++) {
+			for(int j = 0; j < numColumns; j++) {
+				grid[i][j].drawDoor(g, cellSize, wallPadding);
+			}
+		}
+
+		for(Room room : roomMap.values()) {
+			room.drawLabel(g, cellSize, wallPadding);
+		}
+
+		for(Player player : players) {
+			player.drawPlayer(g, cellSize, wallPadding);
+		}
+	}
 }

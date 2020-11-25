@@ -1,10 +1,7 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -80,7 +77,7 @@ public class FileInitTests {
 				if (cell.isDoorway())
 					numDoors++;
 			}
-		Assert.assertEquals(27, numDoors);
+		assertEquals(27, numDoors);
 	}
 	
 	@Test
@@ -104,7 +101,7 @@ public class FileInitTests {
 		assertFalse( cell.isDoorway()) ;
 
 		//tests a room label space
-		cell = board.getCell( 8, 1);
+		cell = board.getCell( 9, 1);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Student Halls" ) ;

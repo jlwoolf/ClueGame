@@ -19,13 +19,18 @@ public class GameControlPanel extends JPanel{
 	JTextField turnField;
 	JTextField guessField;
 	JTextField resultField;
-	
+
+	//constructor to create the game control panel
 	public GameControlPanel() {
 		setLayout(new GridLayout(2,0));
 		add(topHalf());
 		add(bottomHalf());
 	}
-	
+
+	//top half of the game control panel
+	//contains panel for current player
+	//contains panel for current roll
+	//contains panel for accusation and next button
 	private JPanel topHalf() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(1,4));
@@ -35,7 +40,10 @@ public class GameControlPanel extends JPanel{
 		panel.add(nextButton());
 		return panel;
 	}
-	
+
+	//bottom half of the game control panel
+	//contains the current guess
+	//contains the result of a guess
 	private JPanel bottomHalf() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,2));
@@ -43,7 +51,8 @@ public class GameControlPanel extends JPanel{
 		panel.add(resultPanel());
 		return panel;
 	}
-	
+
+	//panel setup for the current turn to display player name and color
 	private JPanel turnPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2,0));
@@ -57,7 +66,8 @@ public class GameControlPanel extends JPanel{
 		
 		return panel;
 	}
-	
+
+	//panel setup for the current roll containing # of roll
 	private JPanel rollPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,2));
@@ -67,11 +77,13 @@ public class GameControlPanel extends JPanel{
 		
 		rollField = new JTextField();
 		rollField.setEditable(false);
+		rollField.setBackground(Color.WHITE);
 		panel.add(rollField);
 		
 		return panel;
 	}
-	
+
+	//setup's for the two buttons
 	private JButton accusationButton() {
 		JButton button = new JButton();
 		button.setText("Make Accusation");
@@ -82,7 +94,8 @@ public class GameControlPanel extends JPanel{
 		button.setText("NEXT!");
 		return button;
 	}
-	
+
+	//setup for the guess panel
 	private JPanel guessPanel() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(), "Guess"));
@@ -90,10 +103,12 @@ public class GameControlPanel extends JPanel{
 		
 		guessField = new JTextField();
 		guessField.setEditable(false);
+		guessField.setBackground(Color.WHITE);
 		panel.add(guessField);
 		
 		return panel;
 	}
+	//setup for the result panel
 	private JPanel resultPanel() {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(new EtchedBorder(), "Guess Result"));
@@ -101,39 +116,28 @@ public class GameControlPanel extends JPanel{
 		
 		resultField = new JTextField();
 		resultField.setEditable(false);
+		resultField.setBackground(Color.WHITE);
 		panel.add(resultField);
 		
 		return panel;
 	}
-	
+
+	//function to update the current player's turn data
 	public void setTurn(Player player) {
 		turnField.setText(player.getName());
 		turnField.setBackground(player.getColor());
 	}
-	
+
+	//function to update the number of rolls
 	public void setRoll(int roll) {
 		rollField.setText(Integer.toString(roll));
 	}
-	
+
+	//functions to update the guess and result panels text
 	public void setGuess(String guess) {
 		guessField.setText(guess);
 	}
 	public void setResult(String result) {
 		resultField.setText(result);
-	}
-	
-	public static void main(String[] args) {
-		GameControlPanel panel = new GameControlPanel();  // create the panel
-        JFrame frame = new JFrame();  // create the frame
-        frame.setContentPane(panel); // put the panel in the frame
-        frame.setSize(750, 180);  // size the frame
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // allow it to close
-        frame.setVisible(true); // make it visible
-
-        panel.setRoll(5);
-        panel.setTurn(new ComputerPlayer("Some Cool Guy", 0, 0, new Color(66, 135, 245)));
-        panel.setGuess("It was somebody, in some room, with some weapon!");
-        panel.setResult("You were right!");
-		
 	}
 }
