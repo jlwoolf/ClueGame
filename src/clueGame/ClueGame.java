@@ -1,11 +1,10 @@
 package clueGame;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class ClueGame extends JFrame{
 	
@@ -21,14 +20,14 @@ public class ClueGame extends JFrame{
 		//initializes the frame data
 		setTitle("CLUE GAME");
 		setSize(WIDTH, HEIGHT);
+		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//creates the control and card panel
 		controlPanel = new GameControlPanel();
-		controlPanel.setPreferredSize(new Dimension(WIDTH, HEIGHT/6));
 		cardPanel = new GameCardsPanel();
-		cardPanel.setPreferredSize(new Dimension(WIDTH/8, HEIGHT));
-		cardPanel.addSeenCard(new Card("test", CardType.ROOM), Color.CYAN);
+		controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
+		cardPanel.setPreferredSize(new Dimension(getWidth()/8, getHeight()));
 
 		//creates the gameboard panel
 		gameBoard = Board.getInstance();
@@ -39,11 +38,29 @@ public class ClueGame extends JFrame{
 		add(controlPanel, BorderLayout.SOUTH);
 		add(cardPanel, BorderLayout.EAST);
 		add(gameBoard);
+
+		addComponentListener(new ResizeListener());
 	}
 
 	//main function
 	public static void main(String[] args) {
 		ClueGame game = new ClueGame();
 		game.setVisible(true);
+	}
+
+	class ResizeListener extends ComponentAdapter {
+		@Override
+		public void componentResized(ComponentEvent e) {
+			super.componentResized(e);
+			controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
+			cardPanel.setPreferredSize(new Dimension(getWidth()/8, getHeight()));
+		}
+
+		@Override
+		public void componentMoved(ComponentEvent e) {
+			super.componentMoved(e);
+			controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
+			cardPanel.setPreferredSize(new Dimension(getWidth()/8, getHeight()));
+		}
 	}
 }

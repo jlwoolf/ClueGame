@@ -1,7 +1,6 @@
 package clueGame;
 
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -45,13 +44,14 @@ public class GameCardsPanel extends JPanel{
 	//creates a card panel for a given card type
 	private JPanel cardPanel(CardType cardType) {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2,0));
+		panel.setLayout(new BoxLayout(panel,BoxLayout.PAGE_AXIS));
 		panel.setBorder(new TitledBorder(new EtchedBorder(), cardType.toString()));
 
 		JPanel hand = new JPanel();
 		hand.setLayout(new GridLayout(0,1));
 
 		JLabel handLabel = new JLabel("In Hand: ");
+
 		hand.add(handLabel);
 		panel.add(hand);
 
@@ -88,5 +88,11 @@ public class GameCardsPanel extends JPanel{
 		hands.get(card.cardType).add(cardField);
 		revalidate();
 		repaint();
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
 	}
 }
