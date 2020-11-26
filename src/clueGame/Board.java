@@ -28,6 +28,7 @@ public class Board extends JPanel{
 	private Solution theAnswer;
 	private Player[] players;
 	private Color[] playerColors;
+	private int humanPlayerIndex;
 	private Set<Card> deck;
 	private Set<Card> allCards;
 
@@ -68,9 +69,9 @@ public class Board extends JPanel{
 	//load setup config and check for errors
 	public void loadSetupConfig() throws FileNotFoundException, BadConfigFormatException{
 		Scanner fileReader = new Scanner(new File(setupConfigFile));
-		roomMap = new HashMap<Character, Room>();
-		allCards = new HashSet<Card>();
-		deck = new HashSet<Card>();
+		roomMap = new HashMap<>();
+		allCards = new HashSet<>();
+		deck = new HashSet<>();
 		//parse through file and add each room to roomMap
 		while(fileReader.hasNext()) {
 			String line = fileReader.nextLine();
@@ -211,7 +212,7 @@ public class Board extends JPanel{
 		return allCards;
 	}
 	public Set<Card> getPeopleCards() {
-		Set<Card> peopleCards = new HashSet<Card>();
+		Set<Card> peopleCards = new HashSet<>();
 
 		for(Card card : allCards) {
 			if(card.getCardType().equals(CardType.PERSON))
@@ -221,7 +222,7 @@ public class Board extends JPanel{
 		return peopleCards;
 	}
 	public Set<Card> getRoomCards() {
-		Set<Card> roomCards = new HashSet<Card>();
+		Set<Card> roomCards = new HashSet<>();
 
 		for(Card card : allCards) {
 			if(card.getCardType().equals(CardType.ROOM))
@@ -231,7 +232,7 @@ public class Board extends JPanel{
 		return roomCards;
 	}
 	public Set<Card> getWeaponCards() {
-		Set<Card> weaponCards = new HashSet<Card>();
+		Set<Card> weaponCards = new HashSet<>();
 
 		for(Card card : allCards) {
 			if(card.getCardType().equals(CardType.WEAPON))
@@ -246,6 +247,10 @@ public class Board extends JPanel{
 	}
 	public Solution getAnswer() {
 		return theAnswer;
+	}
+
+	public Player getHumanPlayer() {
+		return players[humanPlayerIndex];
 	}
 
 	//functions for card handling
@@ -302,8 +307,9 @@ public class Board extends JPanel{
 		players = new Player[6];
 
 		int i = 0;
+		humanPlayerIndex = new Random().nextInt(6);
 		for(Card card : getPeopleCards()) {
-			if(i == 0) {
+			if(i == humanPlayerIndex) {
 				players[i] = new HumanPlayer(card.getCardName());
 			} else {
 				players[i] = new ComputerPlayer(card.getCardName());
