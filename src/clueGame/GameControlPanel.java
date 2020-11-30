@@ -1,222 +1,172 @@
 package clueGame;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class GameControlPanel extends JPanel{
-	private TurnPanel turnPanel;
-	private RollPanel rollPanel;
-	private ButtonPanel buttonPanel;
+	private JLabel turnLabel;
+	private JTextField turnField;
 
-	private GuessPanel guessPanel;
-	private ResultPanel resultPanel;
+	private JLabel rollLabel;
+	private JTextField rollField;
+
+	private JTextField guess;
+	private TitledBorder guessBorder;
+
+	private JTextField result;
+	private TitledBorder resultBorder;
+
+	private JButton accusationButton;
+	private JButton nextButton;
+
+	private Board board;
 
 	//constructor to create the game control panel
-	public GameControlPanel() {
-		setLayout(new GridLayout(2,0));
-		add(topHalf());
-		add(bottomHalf());
+	public GameControlPanel(Board parentBoard) {
+		this.board = parentBoard;
+		setLayout(new GridLayout(3,0));
+		add(top());
+		add(middle());
+		add(bottom());
+
+		setTurn(board.getCurrentPlayer());
+		setRoll(board.getDiceRoll());
 	}
 
 	//top half of the game control panel
 	//contains panel for current player
 	//contains panel for current roll
 	//contains panel for accusation and next button
-	private JPanel topHalf() {
+	private JPanel top() {
 		JPanel top = new JPanel();
-		top.setLayout(new GridLayout(0,2));
+		top.setLayout(new GridLayout(2,0));
 
-		JPanel left = new JPanel();
-		left.setLayout(new GridLayout(0,2));
-		turnPanel = new TurnPanel();
-		rollPanel = new RollPanel();
-		left.add(turnPanel);
-		left.add(rollPanel);
+		JPanel turnPanel = new JPanel();
+		turnPanel.setLayout(new GridLayout(2, 0));
+		turnLabel = new JLabel("Whose turn?", SwingConstants.CENTER);
+		turnPanel.add(turnLabel);
 
-		buttonPanel = new ButtonPanel();
+		turnField = new JTextField();
+		turnField.setEditable(false);
+		turnField.setHorizontalAlignment(SwingConstants.CENTER);
+		turnPanel.add(turnField);
 
-		top.add(left);
-		top.add(buttonPanel);
+
+		JPanel rollPanel = new JPanel();
+		rollPanel.setLayout(new GridLayout(0, 2));
+		rollLabel = new JLabel("Roll:", SwingConstants.RIGHT);
+		rollPanel.add(rollLabel);
+
+		rollField = new JTextField();
+		rollField.setEditable(false);
+		rollField.setBackground(Color.WHITE);
+		rollField.setHorizontalAlignment(SwingConstants.RIGHT);
+		rollPanel.add(rollField);
+
+		top.add(turnPanel);
+		top.add(rollPanel);
 		return top;
 	}
 
 	//bottom half of the game control panel
 	//contains the current guess
 	//contains the result of a guess
-	private JPanel bottomHalf() {
+	private JPanel middle() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(0,2));
+		panel.setLayout(new GridLayout(2,0));
 
-		guessPanel = new GuessPanel();
-		resultPanel = new ResultPanel();
+		JPanel guessPanel = new JPanel();
+		guessBorder =new TitledBorder(new EtchedBorder(), "Guess");
+		guessPanel.setBorder(guessBorder);
+		guessPanel.setLayout(new GridLayout(1, 0));
+
+		guess = new JTextField();
+		guess.setEditable(false);
+		guess.setHorizontalAlignment(SwingConstants.CENTER);
+		guess.setBackground(Color.WHITE);
+		guessPanel.add(guess);
+
+		JPanel resultPanel = new JPanel();
+		resultBorder =new TitledBorder(new EtchedBorder(), "Result");
+		resultPanel.setBorder(resultBorder);
+		resultPanel.setLayout(new GridLayout(1, 0));
+
+		result = new JTextField();
+		result.setEditable(false);
+		result.setHorizontalAlignment(SwingConstants.CENTER);
+		result.setBackground(Color.WHITE);
+		resultPanel.add(result);
+
 		panel.add(guessPanel);
 		panel.add(resultPanel);
 		return panel;
 	}
 
-	//panel setup for the current turn to display player name and color
-	private static class TurnPanel extends JPanel {
-		private final JLabel turnLabel;
-		private final JTextField turnField;
+	private JPanel bottom() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 0));
 
-		public TurnPanel() {
-			setLayout(new GridLayout(2, 0));
+		accusationButton = new JButton("Make Accusation");
+		nextButton = new JButton("NEXT");
+		nextButton.addActionListener(new NextListener());
 
-			turnLabel = new JLabel("Whose turn?", SwingConstants.CENTER);
-			add(turnLabel);
+		panel.add(accusationButton);
+		panel.add(nextButton);
+		return panel;
+	}
 
-			turnField = new JTextField();
-			turnField.setEditable(false);
-			add(turnField);
-		}
-
-		public void setTurn(Player player) {
-			turnField.setText(player.getName());
-			turnField.setBackground(player.getColor());
-		}
+	private class NextListener implements ActionListener {
 
 		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			turnLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
-			turnField.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
+		public void actionPerformed(ActionEvent e) {
+			board.next();
+			setTurn(board.getCurrentPlayer());
+			setRoll(board.getDiceRoll());
 		}
 	}
 
-	//panel setup for the current roll containing # of roll
-	private static class RollPanel extends JPanel {
-		private final JLabel rollLabel;
-		private final JTextField rollField;
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
-		public RollPanel() {
-			setLayout(new GridLayout(0, 2));
+		turnLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
+		turnField.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
-			rollLabel = new JLabel("Roll:", SwingConstants.RIGHT);
-			add(rollLabel);
+		rollLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
+		rollField.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
-			rollField = new JTextField();
-			rollField.setEditable(false);
-			rollField.setBackground(Color.WHITE);
-			rollField.setHorizontalAlignment(SwingConstants.RIGHT);
-			add(rollField);
-		}
+		guess.setFont(new Font("Label.font", Font.PLAIN, getWidth()/8));
+		guessBorder.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
-		public void setRoll(int roll) {
-			rollField.setText(Integer.toString(roll));
-		}
+		result.setFont(new Font("Label.font", Font.PLAIN, getWidth()/8));
+		resultBorder.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
-		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			rollLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
-			rollField.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
-		}
+		accusationButton.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
+		nextButton.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 	}
 
-	private static class ButtonPanel extends JPanel {
-		private final JButton accusationButton;
-		private final JButton nextButton;
-
-		public ButtonPanel() {
-			setLayout(new GridLayout(0, 2));
-
-			accusationButton = new JButton("Make Accusation");
-			nextButton = new JButton("NEXT");
-
-			add(accusationButton);
-			add(nextButton);
-		}
-
-		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			accusationButton.setFont(new Font("Label.font", Font.PLAIN, getWidth()/24));
-			nextButton.setFont(new Font("Label.font", Font.PLAIN, getWidth()/24));
-		}
-	}
-
-	private static class GuessPanel extends JPanel {
-		private final JTextField guess;
-		private final TitledBorder border;
-
-		public GuessPanel() {
-			border =new TitledBorder(new EtchedBorder(), "Guess");
-			setBorder(border);
-			setLayout(new GridLayout(0, 1));
-
-			guess = new JTextField();
-			guess.setEditable(false);
-			guess.setHorizontalAlignment(SwingConstants.CENTER);
-			guess.setBackground(Color.WHITE);
-
-			add(guess);
-		}
-
-		public void setGuess(String guess) {
-			this.guess.setText(guess);
-		}
-
-		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			guess.setFont(new Font("Label.font", Font.PLAIN, getWidth()/24));
-			border.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/48));
-		}
-	}
-
-
-	private static class ResultPanel extends JPanel {
-		private final JTextField result;
-		private final TitledBorder border;
-
-		public ResultPanel() {
-			border =new TitledBorder(new EtchedBorder(), "Result");
-			setBorder(border);
-			setLayout(new GridLayout(0, 1));
-
-			result = new JTextField();
-			result.setEditable(false);
-			result.setHorizontalAlignment(SwingConstants.CENTER);
-			result.setBackground(Color.WHITE);
-
-			add(result);
-		}
-
-		public void setResult(String guess) {
-			this.result.setText(guess);
-		}
-
-		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			result.setFont(new Font("Label.font", Font.PLAIN, getWidth()/24));
-			border.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/48));
-		}
-	}
-
-	//function to update the current player's turn data
+	//function to update the text for the current player
 	public void setTurn(Player player) {
-		turnPanel.setTurn(player);
+		turnField.setText(player.getName());
+		turnField.setBackground(player.getColor());
 	}
-
 	//function to update the number of rolls
 	public void setRoll(int roll) {
-		rollPanel.setRoll(roll);
+		rollField.setText(Integer.toString(roll));
 	}
 
-	//functions to update the guess and result panels text
+	//function to update the text for the guess
 	public void setGuess(String guess) {
-		guessPanel.setGuess(guess);
+		this.guess.setText(guess);
 	}
-	public void setResult(String result) {
-		resultPanel.setResult(result);
+	//function to update the text for the result
+	public void setResult(String guess) {
+		this.result.setText(guess);
 	}
+
 }

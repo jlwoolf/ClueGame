@@ -31,7 +31,7 @@ public class ComputerAITest {
 
 	@Test
 	public void testComputerSuggestion() {
-		ComputerPlayer computerPlayer = new ComputerPlayer("testPlayer", 2, 2, Color.BLUE);
+		ComputerPlayer computerPlayer = new ComputerPlayer("testPlayer", 3, 2, Color.BLUE);
 		Solution suggestion;
 	
 		//fill seenCards with all cards except for 4
@@ -97,13 +97,13 @@ public class ComputerAITest {
 		//if contains room not seen choose room
 		board.calcTargets(board.getCell(computerPlayer.getRow(), computerPlayer.getCol()), 3);
 		targets = board.getTargets();
-		assertEquals(board.getCell(2, 2), computerPlayer.selectTargets(targets));
+		assertEquals(board.getCell(3, 2), computerPlayer.selectTargets(targets));
 		
 		//if contains room seen choose randomly
 		computerPlayer.updateSeen(new Card("Parking Garage", CardType.ROOM));
 		walkwayCount = 0;
 		for(int i = 0; i < 300; i++) {
-			if(computerPlayer.selectTargets(targets).equals(board.getCell(2, 2))) {
+			if(computerPlayer.selectTargets(targets).equals(board.getCell(3, 2))) {
 				walkwayCount++;
 			}
 		}

@@ -14,8 +14,8 @@ import javax.swing.border.TitledBorder;
 import java.util.*;
 
 public class GameCardsPanel extends JPanel{
-	private CardPanel[] cardPanels;
-	private TitledBorder border;
+	private final CardPanel[] cardPanels;
+	private final TitledBorder border;
 
 	//constructor to create the the panel
 	//adds different card panel for person, room, and weapons
@@ -53,6 +53,6 @@ public class GameCardsPanel extends JPanel{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		border.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/8));
+		border.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/16));
 	}
 }

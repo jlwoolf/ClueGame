@@ -55,11 +55,11 @@ public class CardPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        handLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/16));
-        seenLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/16));
-        border.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
+        handLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/22));
+        seenLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/22));
+        border.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/20));
 
-        hand.paintComponent(g, getHeight()/numCards, getHeight()/24);
-        seen.paintComponent(g, getHeight()/numCards, getHeight()/24);
+        hand.paintComponent(g, getHeight()/numCards, getHeight()/22);
+        seen.paintComponent(g, getHeight()/numCards, getHeight()/22);
     }
 }

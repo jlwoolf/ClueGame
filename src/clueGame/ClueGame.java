@@ -26,7 +26,7 @@ public class ClueGame extends JFrame{
 	public ClueGame() {
 		//initializes the frame data
 		setTitle("CLUE GAME");
-		setSize(1920, 1080);
+		setSize(1280, 720);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		try {
@@ -35,45 +35,23 @@ public class ClueGame extends JFrame{
 			e.printStackTrace();
 		}
 
-		//creates the control and card panel
-		controlPanel = new GameControlPanel();
-		cardPanel = new GameCardsPanel();
-		controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
-		cardPanel.setPreferredSize(new Dimension(getWidth()/8, getHeight()));
-
 		//creates the gameboard panel
 		gameBoard = Board.getInstance();
 		gameBoard.setConfigFiles("ClueLayout.csv", "ClueSetup.txt");
 		gameBoard.initialize();
 
+		//creates the control and card panel
+		controlPanel = new GameControlPanel(gameBoard);
+		cardPanel = new GameCardsPanel();
+		controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
+		cardPanel.setPreferredSize(new Dimension(getWidth()/8, getHeight()));
+
 		//adds the panels to the frame
-		add(cardPanel, BorderLayout.EAST);
-		add(controlPanel, BorderLayout.SOUTH);
+		add(cardPanel, BorderLayout.WEST);
+		add(controlPanel, BorderLayout.EAST);
 		add(gameBoard, BorderLayout.CENTER);
 
-
-		for(Card card : gameBoard.getPeopleCards()) {
-			int i = new Random().nextInt(3);
-			if(i == 0)
-				cardPanel.addHandCard(card, Color.CYAN);
-			else if (i == 1)
-				cardPanel.addHandCard(card, Color.RED);
-			else
-				cardPanel.addHandCard(card, Color.GREEN);
-		}
-
-		for(Card card : gameBoard.getRoomCards()) {
-			int i = new Random().nextInt(3);
-			if(i == 0)
-				cardPanel.addHandCard(card, Color.CYAN);
-			else if (i == 1)
-				cardPanel.addHandCard(card, Color.RED);
-			else
-				cardPanel.addHandCard(card, Color.GREEN);
-		}
-
 		addComponentListener(new ResizeListener());
-
 
 		createOptionPane();
 
@@ -91,7 +69,7 @@ public class ClueGame extends JFrame{
 		optionButton.setPreferredSize(new Dimension(getWidth()/4, getHeight()/6));
 		optionButton.validate();
 
-		JDialog optionDialog = optionPane.createDialog(this,"URGENT");
+		JDialog optionDialog = optionPane.createDialog(this,"");
 		optionDialog.setVisible(true);
 	}
 
@@ -105,15 +83,15 @@ public class ClueGame extends JFrame{
 		@Override
 		public void componentResized(ComponentEvent e) {
 			super.componentResized(e);
-			controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
-			cardPanel.setPreferredSize(new Dimension(getHeight()/4, getHeight()));
+			controlPanel.setPreferredSize(new Dimension(getWidth()/6, getHeight()));
+			cardPanel.setPreferredSize(new Dimension(getWidth()/6, getHeight()));
 		}
 
 		@Override
 		public void componentMoved(ComponentEvent e) {
 			super.componentMoved(e);
-			controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
-			cardPanel.setPreferredSize(new Dimension(getHeight()/4, getHeight()));
+			controlPanel.setPreferredSize(new Dimension(getWidth()/6, getHeight()));
+			cardPanel.setPreferredSize(new Dimension(getWidth()/6, getHeight()));
 		}
 	}
 }

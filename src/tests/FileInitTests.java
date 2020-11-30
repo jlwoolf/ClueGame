@@ -92,7 +92,7 @@ public class FileInitTests {
 		assertFalse( cell.isDoorway()) ;
 		
 		//tests a room center space
-		cell = board.getCell( 2, 10);
+		cell = board.getCell( 4, 10);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Arthur Lakes Library" ) ;
@@ -101,7 +101,7 @@ public class FileInitTests {
 		assertFalse( cell.isDoorway()) ;
 
 		//tests a room label space
-		cell = board.getCell( 9, 1);
+		cell = board.getCell( 8, 1);
 		room = board.getRoom( cell ) ;
 		assertTrue( room != null );
 		assertEquals( room.getName(), "Student Halls" ) ;

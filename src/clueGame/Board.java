@@ -1,7 +1,10 @@
 package clueGame;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -11,7 +14,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Board extends JPanel{
 	private BoardCell[][] grid;
@@ -29,11 +32,16 @@ public class Board extends JPanel{
 	private Player[] players;
 	private Color[] playerColors;
 	private int humanPlayerIndex;
+	private int currentPlayerIndex;
 	private Set<Card> deck;
 	private Set<Card> allCards;
 
 	private Set<BoardCell> targets;
 	private Set<BoardCell> visited;
+
+	private int cellSize;
+	private int[] wallPadding;
+	private int diceRoll;
 
 	//singleton design
 	/***************************************************************************************************************************************************/
@@ -58,6 +66,9 @@ public class Board extends JPanel{
 		calcAdj();
 		createAnswer();
 		fillPlayers();
+		rollDice();
+		calcTargets(grid[getCurrentPlayer().getRow()][getCurrentPlayer().getCol()], diceRoll);
+		addMouseListener(new BoardClick());
 	}
 
 	//defines the file location for setup and layout
@@ -252,6 +263,9 @@ public class Board extends JPanel{
 	public Player getHumanPlayer() {
 		return players[humanPlayerIndex];
 	}
+	public Player getCurrentPlayer() {
+		return players[currentPlayerIndex];
+	}
 
 	//functions for card handling
 	/***************************************************************************************************************************************************/
@@ -308,6 +322,7 @@ public class Board extends JPanel{
 
 		int i = 0;
 		humanPlayerIndex = new Random().nextInt(6);
+		currentPlayerIndex = humanPlayerIndex;
 		for(Card card : getPeopleCards()) {
 			if(i == humanPlayerIndex) {
 				players[i] = new HumanPlayer(card.getCardName());
@@ -326,6 +341,7 @@ public class Board extends JPanel{
 					players[j].setColor(playerColors[j]);
 					players[j].setRow(pair[0]);
 					players[j].setCol(pair[1]);
+					grid[pair[0]][pair[1]].setOccupied(true);
 					j++;
 					startingLocations.remove(pair);
 					break;
@@ -377,7 +393,6 @@ public class Board extends JPanel{
 	/***************************************************************************************************************************************************/
 	public void calcTargets(BoardCell startCell, int pathLength) {
 		visited = new HashSet<>();
-		visited.add(startCell);
 		targets = recursiveTargets(startCell, pathLength);
 	}
 	public Set<BoardCell> getTargets() {
@@ -385,11 +400,13 @@ public class Board extends JPanel{
 	}
 	private Set<BoardCell> recursiveTargets(BoardCell startCell, int pathLength) {
 		Set<BoardCell> targetSet = new HashSet<>();
-
+		visited.add(startCell);
 		for(BoardCell adjCell : startCell.getAdjList()) {
-			if(visited.contains(adjCell) || adjCell.isOccupied()) {
-				//checks if occupied is a room
-				if(adjCell.isOccupied() && adjCell.isRoom()) {
+			if(visited.contains(adjCell)) {
+				continue;
+			}
+			if(adjCell.isOccupied()) {
+				if(adjCell.isRoom()) {
 					targetSet.add(adjCell);
 				}
 				continue;
@@ -412,6 +429,7 @@ public class Board extends JPanel{
 		return grid[i][j].getAdjList();
 	}
 	private void calcAdj() {
+		targets = new HashSet<>();
 		for(int i = 0; i < numRows; i++) {
 			for(int j = 0; j < numColumns; j++) {
 				//calculates the adjencies for the cell if its a room, doorway, or walkway
@@ -486,8 +504,8 @@ public class Board extends JPanel{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		int cellSize = Math.min(getWidth()/numColumns, getHeight()/numRows);
-		int[] wallPadding = {(getWidth() - numColumns*cellSize)/2, (getHeight() - numRows*cellSize)/2};
+		cellSize = Math.min(getWidth()/numColumns, getHeight()/numRows);
+		wallPadding = new int[]{(getWidth() - numColumns * cellSize) / 2, (getHeight() - numRows * cellSize) / 2};
 
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -504,12 +522,146 @@ public class Board extends JPanel{
 			}
 		}
 
+		if(currentPlayerIndex == humanPlayerIndex) {
+			for (BoardCell target : targets) {
+				target.drawTarget(g, cellSize, wallPadding);
+			}
+		}
+
 		for(Room room : roomMap.values()) {
 			room.drawLabel(g, cellSize, wallPadding);
 		}
 
 		for(Player player : players) {
-			player.drawPlayer(g, cellSize, wallPadding);
+			player.drawPlayer(g, cellSize, wallPadding, grid[player.getRow()][player.getCol()].isRoom());
 		}
+	}
+
+	//function for gameplay
+	/***************************************************************************************************************************************************/
+	public void rollDice() {
+		diceRoll = new Random().nextInt(3) + 1;
+		//diceRoll += new Random().nextInt(6) + 1;
+	}
+	public int getDiceRoll() {
+		return diceRoll;
+	}
+
+	public void next() {
+		if(getCurrentPlayer() instanceof HumanPlayer && ((HumanPlayer) getCurrentPlayer()).isUnfinished()) {
+			createMessagePane("You haven't finished your move.");
+		} else {
+			currentPlayerIndex++;
+			if (currentPlayerIndex == players.length)
+				currentPlayerIndex = 0;
+
+			rollDice();
+			calcTargets(grid[getCurrentPlayer().getRow()][getCurrentPlayer().getCol()], diceRoll);
+
+			if(getCurrentPlayer() instanceof ComputerPlayer) {
+				doMove();
+			} else {
+				((HumanPlayer) getCurrentPlayer()).setUnfinished(true);
+			}
+
+			repaint();
+		}
+	}
+
+	public void doAccusation() {
+
+	}
+
+	public void doMove() {
+		ComputerPlayer computerPlayer = (ComputerPlayer) getCurrentPlayer();
+		BoardCell target = computerPlayer.selectTargets(targets);
+
+		grid[computerPlayer.getRow()][computerPlayer.getCol()].setOccupied(false);
+		computerPlayer.setRow(target.getRow());
+		computerPlayer.setCol(target.getCol());
+
+		for(Player player : players) {
+			grid[player.getRow()][player.getCol()].setOccupied(true);
+		}
+
+		repaint();
+	}
+
+	public void makeSuggestion() {
+
+	}
+
+	public BoardCell clickTarget(int row, int col) {
+		BoardCell clickedTarget = null;
+		for(BoardCell target : targets) {
+			if(target.getRow() == row && target.getCol() == col) {
+				clickedTarget = target;
+				break;
+			}
+		}
+
+		return clickedTarget;
+	}
+
+	private class BoardClick implements MouseListener {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			int row = (e.getY() - wallPadding[1])/cellSize;
+			int col = (e.getX() - wallPadding[0])/cellSize;
+			if(getCurrentPlayer() instanceof HumanPlayer && ((HumanPlayer) getCurrentPlayer()).isUnfinished()) {
+				if(clickTarget(row, col) != null) {
+					grid[getCurrentPlayer().getRow()][getCurrentPlayer().getCol()].setOccupied(false);
+					grid[row][col].setOccupied(true);
+
+					getCurrentPlayer().setRow(row);
+					getCurrentPlayer().setCol(col);
+					repaint();
+
+					((HumanPlayer) getCurrentPlayer()).setUnfinished(false);
+
+				} else {
+					createMessagePane("This is not a valid target.");
+				}
+
+
+			}
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+
+		}
+	}
+
+	public void createMessagePane(String message) {
+		JLabel optionPaneText = new JLabel("<html><center>"+ message +"</center></html>");
+		optionPaneText.setFont(new Font("Label.font", Font.PLAIN, getHeight()/12));
+		JOptionPane optionPane = new JOptionPane(optionPaneText, JOptionPane.PLAIN_MESSAGE);
+
+		JPanel optionPanel = (JPanel)optionPane.getComponent(1);
+
+		JButton optionButton = (JButton)optionPanel.getComponent(0);
+		optionButton.setFont(new Font("Label.font", Font.PLAIN, getHeight()/12));
+		optionButton.setPreferredSize(new Dimension(getWidth()/6, getHeight()/8));
+		optionButton.validate();
+
+		JDialog optionDialog = optionPane.createDialog(this,"");
+		optionDialog.setVisible(true);
 	}
 }

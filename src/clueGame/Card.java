@@ -22,8 +22,6 @@ public class Card {
 	//equals function for card comparison
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == this)
-			return true;
 		if(!(obj instanceof Card))
 			return false;
 		

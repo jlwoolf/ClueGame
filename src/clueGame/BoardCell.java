@@ -133,6 +133,10 @@ public class BoardCell {
 			g.fillRect(col * size + wallPadding[0], row * size + wallPadding[1], size, size);
 		}
 	}
+	public void drawTarget(Graphics g, int size, int[] wallPadding) {
+		g.setColor(new Color(84, 133, 83));
+		g.fillRect(col*size + wallPadding[0], row*size + wallPadding[1], size, size);
+	}
 
 	//function to draw a door
 	public void drawDoor(Graphics g, int size, int[] wallPadding) {

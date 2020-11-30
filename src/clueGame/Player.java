@@ -15,6 +15,10 @@ public abstract class Player {
 		private int row;
 		private int col;
 
+		private int randomPaddingX;
+		private int randomPaddingY;
+		private boolean inRoom;
+
 		//constructors
 		public Player(String name) {
 			super();
@@ -120,8 +124,18 @@ public abstract class Player {
 		}
 
 		//function for drawing the player
-		public void drawPlayer(Graphics g, int size, int[] wallPadding) {
+		public void drawPlayer(Graphics g, int size, int[] wallPadding, boolean inRoom) {
+			if(!this.inRoom && inRoom && !(this instanceof HumanPlayer)) {
+				randomPaddingX = new Random().nextInt(size);
+				randomPaddingY = new Random().nextInt(size);
+				this.inRoom = true;
+			} else if(this.inRoom && !inRoom) {
+				randomPaddingX = 0;
+				randomPaddingY = 0;
+				this.inRoom = false;
+			}
+
 			g.setColor(color);
-			g.fillOval(col*size + wallPadding[0], row*size + wallPadding[1], size, size);
+			g.fillOval(col * size + wallPadding[0]+randomPaddingX, row * size + wallPadding[1]+randomPaddingY, size, size);
 		}
 }
