@@ -1,8 +1,11 @@
 package clueGame;
 
+import java.awt.*;
+
 public class Card {
 	String cardName;
 	CardType cardType;
+	Color cardColor;
 
 	//basic constructor
 	public Card(String cardName, CardType cardType) {
@@ -40,5 +43,14 @@ public class Card {
 			result = 31 * result + cardType.hashCode();
 		}
 		return result;
+	}
+
+	//added a card color that corresponds with the player to
+	//make coloring cards on the card panel easier
+	public void setCardColor(Color cardColor) {
+		this.cardColor = cardColor;
+	}
+	public Color getColor() {
+		return cardColor;
 	}
 }

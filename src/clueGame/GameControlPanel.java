@@ -15,7 +15,9 @@ public class GameControlPanel extends JPanel{
 	private JLabel rollLabel;
 	private JTextField rollField;
 
-	private JTextField guess;
+	private JTextField guessPerson;
+	private JTextField guessRoom;
+	private JTextField guessWeapon;
 	private TitledBorder guessBorder;
 
 	private JTextField result;
@@ -24,7 +26,7 @@ public class GameControlPanel extends JPanel{
 	private JButton accusationButton;
 	private JButton nextButton;
 
-	private Board board;
+	private final Board board;
 
 	//constructor to create the game control panel
 	public GameControlPanel(Board parentBoard) {
@@ -38,10 +40,9 @@ public class GameControlPanel extends JPanel{
 		setRoll(board.getDiceRoll());
 	}
 
-	//top half of the game control panel
+	//top portion of the game control panel
 	//contains panel for current player
 	//contains panel for current roll
-	//contains panel for accusation and next button
 	private JPanel top() {
 		JPanel top = new JPanel();
 		top.setLayout(new GridLayout(2,0));
@@ -73,7 +74,7 @@ public class GameControlPanel extends JPanel{
 		return top;
 	}
 
-	//bottom half of the game control panel
+	//middle portion of the game control panel
 	//contains the current guess
 	//contains the result of a guess
 	private JPanel middle() {
@@ -83,13 +84,26 @@ public class GameControlPanel extends JPanel{
 		JPanel guessPanel = new JPanel();
 		guessBorder =new TitledBorder(new EtchedBorder(), "Guess");
 		guessPanel.setBorder(guessBorder);
-		guessPanel.setLayout(new GridLayout(1, 0));
+		guessPanel.setLayout(new GridLayout(3, 0));
 
-		guess = new JTextField();
-		guess.setEditable(false);
-		guess.setHorizontalAlignment(SwingConstants.CENTER);
-		guess.setBackground(Color.WHITE);
-		guessPanel.add(guess);
+		guessPerson = new JTextField();
+		guessPerson.setEditable(false);
+		guessPerson.setHorizontalAlignment(SwingConstants.CENTER);
+		guessPerson.setBackground(Color.WHITE);
+
+		guessWeapon = new JTextField();
+		guessWeapon.setEditable(false);
+		guessWeapon.setHorizontalAlignment(SwingConstants.CENTER);
+		guessWeapon.setBackground(Color.WHITE);
+
+		guessRoom = new JTextField();
+		guessRoom.setEditable(false);
+		guessRoom.setHorizontalAlignment(SwingConstants.CENTER);
+		guessRoom.setBackground(Color.WHITE);
+
+		guessPanel.add(guessPerson);
+		guessPanel.add(guessRoom);
+		guessPanel.add(guessWeapon);
 
 		JPanel resultPanel = new JPanel();
 		resultBorder =new TitledBorder(new EtchedBorder(), "Result");
@@ -107,11 +121,14 @@ public class GameControlPanel extends JPanel{
 		return panel;
 	}
 
+	//bottom portion of the game control panel
+	//contains the accusation and next buttons
 	private JPanel bottom() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(2, 0));
 
 		accusationButton = new JButton("Make Accusation");
+		accusationButton.addActionListener(new AccusationListener());
 		nextButton = new JButton("NEXT");
 		nextButton.addActionListener(new NextListener());
 
@@ -120,13 +137,21 @@ public class GameControlPanel extends JPanel{
 		return panel;
 	}
 
+	//action listener for the next button
 	private class NextListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			board.next();
+			board.clickNext();
 			setTurn(board.getCurrentPlayer());
 			setRoll(board.getDiceRoll());
+		}
+	}
+	//action listener for the make accusation button
+	private class AccusationListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			board.doHumanAccusation();
 		}
 	}
 
@@ -140,10 +165,12 @@ public class GameControlPanel extends JPanel{
 		rollLabel.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 		rollField.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
-		guess.setFont(new Font("Label.font", Font.PLAIN, getWidth()/8));
+		guessPerson.setFont(new Font("Label.font", Font.PLAIN, getWidth()/20));
+		guessRoom.setFont(new Font("Label.font", Font.PLAIN, getWidth()/20));
+		guessWeapon.setFont(new Font("Label.font", Font.PLAIN, getWidth()/20));
 		guessBorder.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
-		result.setFont(new Font("Label.font", Font.PLAIN, getWidth()/8));
+		result.setFont(new Font("Label.font", Font.PLAIN, getWidth()/20));
 		resultBorder.setTitleFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
 
 		accusationButton.setFont(new Font("Label.font", Font.PLAIN, getWidth()/12));
@@ -161,8 +188,18 @@ public class GameControlPanel extends JPanel{
 	}
 
 	//function to update the text for the guess
-	public void setGuess(String guess) {
-		this.guess.setText(guess);
+	//decided to split the guess into three seperate
+	//text fields as it looks nicer
+	public void setGuess(Solution guess) {
+		if(guess == null) {
+			this.guessPerson.setText("");
+			this.guessRoom.setText("");
+			this.guessWeapon.setText("");
+		} else {
+			this.guessPerson.setText(guess.getPerson().getCardName());
+			this.guessRoom.setText(guess.getRoom().getCardName());
+			this.guessWeapon.setText(guess.getWeapon().getCardName());
+		}
 	}
 	//function to update the text for the result
 	public void setResult(String guess) {

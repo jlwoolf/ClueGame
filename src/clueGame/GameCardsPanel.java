@@ -35,17 +35,18 @@ public class GameCardsPanel extends JPanel{
 		}
 	}
 
-	public void addHandCard(Card card, Color color) {
+	//adds cards to the hand or seen card panels
+	public void addHandCard(Card card) {
 		for(CardPanel cardPanel : cardPanels) {
 			if(card.getCardType().equals(cardPanel.getCardPanelType())) {
-				cardPanel.addHandCard(card, color);
+				cardPanel.addHandCard(card, card.getColor());
 			}
 		}
 	}
-	public void addSeenCard(Card card, Color color) {
+	public void addSeenCard(Card card) {
 		for(CardPanel cardPanel : cardPanels) {
 			if(card.getCardType().equals(cardPanel.getCardPanelType())) {
-				cardPanel.addSeenCard(card, color);
+				cardPanel.addSeenCard(card, card.getColor());
 			}
 		}
 	}

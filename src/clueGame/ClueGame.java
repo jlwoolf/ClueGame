@@ -41,8 +41,11 @@ public class ClueGame extends JFrame{
 		gameBoard.initialize();
 
 		//creates the control and card panel
+		//adds them to the board
 		controlPanel = new GameControlPanel(gameBoard);
+		gameBoard.setGameControlPanel(controlPanel);
 		cardPanel = new GameCardsPanel();
+		gameBoard.setGameCardsPanel(cardPanel);
 		controlPanel.setPreferredSize(new Dimension(getWidth(), getHeight()/6));
 		cardPanel.setPreferredSize(new Dimension(getWidth()/8, getHeight()));
 

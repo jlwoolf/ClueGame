@@ -34,4 +34,13 @@ public class Solution {
 		}
 		return this.weapon.equals(solution.getWeapon());
 	}
+
+	//prints out the solution, but I do not think is used
+	@Override
+	public String toString() {
+		if(person == null || room == null || weapon == null) {
+			return "";
+		}
+		return person.getCardName() + ", " + room.getCardName() + ", " + weapon.getCardName();
+	}
 }

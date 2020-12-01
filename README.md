@@ -1,2 +1,2 @@
 #Jonathan Woolf
-ClueGame C22A Game Board GUI
+ClueGame C23A Moving the Players
