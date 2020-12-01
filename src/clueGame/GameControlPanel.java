@@ -151,7 +151,9 @@ public class GameControlPanel extends JPanel{
 	private class AccusationListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			board.doHumanAccusation();
+			if(board.getHumanPlayer().isUnfinished()) {
+				board.doHumanAccusation();
+			}
 		}
 	}
 

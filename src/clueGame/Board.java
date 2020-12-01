@@ -722,8 +722,8 @@ public class Board extends JPanel{
 				gameControlPanel.setResult("Correct accusation");
 				createMessagePane("Congrats! You found the answer! You win!");
 			} else {
-				createMessagePane("Sorry... That's the wrong answer. You lose...");
 				gameControlPanel.setResult("Wrong accusation");
+				createMessagePane("Sorry... That's the wrong answer. You lose...");
 			}
 			System.exit(0);
 		}
