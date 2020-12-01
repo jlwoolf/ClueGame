@@ -2,7 +2,7 @@
 Room, Brown Hall, B
 Room, Rec Center, R
 Room, Student Center, S
-Room, Bethoud Hall, b,
+Room, Berthoud Hall, b,
 Room, Arthur Lakes Library, L
 Room, Student Halls, s
 Room, Chauvenet Hall, C
