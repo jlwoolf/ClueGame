@@ -1,2 +1,2 @@
 #Jonathan Woolf
-ClueGame C23A Moving the Players
+ClueGame C24A Finishing Clue
