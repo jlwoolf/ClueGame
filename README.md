@@ -1,2 +1,2 @@
-#Jonathan Woolf
-ClueGame C24A Finishing Clue
+# Single Player Clue (The Game)
+A fully working version of Clue using the Colorado School of Mines as a creative inspiration for the board. Game contains working GUI with interactive board, informative side panels and challenging computer players. Developed for Software Engineering over the course of a semester. The most cluttered project visible on this Github due to the ever changing direction in the class and complexity of the project.
